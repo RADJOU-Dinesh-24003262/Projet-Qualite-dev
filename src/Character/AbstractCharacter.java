@@ -1,5 +1,7 @@
 package Character;
 
+import Food.AbstractFood;
+
 import java.util.Objects;
 
 public abstract class AbstractCharacter{
@@ -56,9 +58,14 @@ public abstract class AbstractCharacter{
         other.setHealth(other.getHealth() + this.strength);
     }
 
-    public void eat(){
+    public void heal() {
+        this.setHealth(this.getHealth() + this.strength);
+    }
+
+    public void eat(AbstractFood food){
         // TO DO : en fonction de l'alimentation
         this.setHealth(getHealth() + 1);
+
     }
 
     public void drink (MagicPotion potion){
