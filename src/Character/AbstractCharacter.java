@@ -48,7 +48,7 @@ public abstract class AbstractCharacter{
         other.setHealth(other.getHealth() - damage);
     }
 
-    public void fightBoth(AbstractCharacter other){
+    public void mutualFight(AbstractCharacter other){
         int damageToOther = Math.max(0, this.strength - other.stamina);
         int damageToThis  = Math.max(0, other.strength - this.stamina);
 
@@ -74,20 +74,21 @@ public abstract class AbstractCharacter{
 
 
     public void eatFood(FoodItem food){
-        if (!canEat(food) || food.isFresh() == (food.getType() == FoodItemType.FISH || food.getType() == FoodItemType.CLOVER))
+        if (!canEat(food) || (food.isFresh() != null && !food.isFresh())) {
             this.setHealth(getHealth() - 10);
-        this.setHunger(getHealth() + food.getNutritionalScore());
+        } else {
+            this.setHunger(getHunger() + food.getNutritionalScore());
+        }
     }
 
     public void drinkPotion (Potion potion){
-        this.setLevelMagicPotion(potion.getMagicBoost());
+           this.setLevelMagicPotion(getLevelMagicPotion() + potion.getMagicBoost());
     }
 
-    public void dead(){
+    public void die(){
         this.setHealth(0);
         this.setStrength(0);
         this.setStamina(0);
-        this.setHealth(0);
         this.isAlive = false;
     }
 
