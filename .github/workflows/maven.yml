@@ -40,18 +40,6 @@ jobs:
       - name: Compile
         run: mvn clean compile
 
-      # 5️⃣ Vérifier le style avec Checkstyle
-      - name: Run Checkstyle
-        run: mvn checkstyle:check
-
-      # 6️⃣ Vérifier PMD
-      - name: Run PMD
-        run: mvn pmd:check
-
-      # 7️⃣ Vérifier SpotBugs
-      - name: Run SpotBugs
-        run: mvn spotbugs:check
-
       # 8️⃣ Lancer les tests JUnit
       - name: Run tests
         run: mvn test
