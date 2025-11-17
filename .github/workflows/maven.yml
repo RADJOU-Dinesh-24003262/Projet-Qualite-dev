@@ -11,8 +11,7 @@ name: Java Quality & Test
 on:
   pull_request:
   push:
-    branches:
-      - main
+
 
 jobs:
   build-and-test:
