@@ -1,6 +1,4 @@
-package Character.Fighter;
-
-import Character.AbstractCharacter;
+package Character;
 
 public class Werewolves extends AbstractCharacter {
 }
