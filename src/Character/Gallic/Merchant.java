@@ -1,7 +1,5 @@
 package Character.Gallic;
 
-import Character.AbstractCharacter;
-
-public class Merchant extends AbstractCharacter {
+public class Merchant extends Gallic {
 
 }

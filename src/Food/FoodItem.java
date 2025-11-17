@@ -6,7 +6,7 @@ public class FoodItem {
 
     public FoodItem(FoodItemType type) {
         this.type = type;
-        
+
         if (type == FoodItemType.FISH || type == FoodItemType.CLOVER) {
             this.isFresh = true;
         } else {
@@ -35,5 +35,9 @@ public class FoodItem {
 
     public FoodType getCategory() {
         return type.getCategory();
+    }
+
+    public int getNutritionalScore() {
+        return type.nutritionalScore;
     }
 }

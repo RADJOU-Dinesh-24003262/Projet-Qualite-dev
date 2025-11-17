@@ -1,6 +1,4 @@
 package Character.Gallic;
 
-import Character.AbstractCharacter;
-
-public class Druid extends AbstractCharacter {
+public class Druid extends Gallic {
 }

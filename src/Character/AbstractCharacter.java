@@ -1,5 +1,10 @@
 package Character;
 
+import Food.FoodItem;
+import Food.FoodItemType;
+import Potion.Potion;
+
+import java.util.Arrays;
 import java.util.Objects;
 
 public abstract class AbstractCharacter{
@@ -56,13 +61,26 @@ public abstract class AbstractCharacter{
         other.setHealth(other.getHealth() + this.strength);
     }
 
-    public void eat(){
-        // TO DO : en fonction de l'alimentation
-        this.setHealth(getHealth() + 1);
+    protected abstract FoodItemType[] getFoodEdibleList();
+
+    // Public method to check if the food is edible
+    public boolean canEat(FoodItem food) {
+        if (food == null || food.getType() == null) {
+            return false; // Defensive null check
+        }
+        // Convert array to List and check if it contains the type
+        return Arrays.asList(getFoodEdibleList()).contains(food.getType());
     }
 
-    public void drink (MagicPotion potion){
-        this.setLevelMagicPotion(potion);
+
+    public void eatFood(FoodItem food){
+        if (!canEat(food) || food.isFresh() == (food.getType() == FoodItemType.FISH || food.getType() == FoodItemType.CLOVER))
+            this.setHealth(getHealth() - 10);
+        this.setHunger(getHealth() + food.getNutritionalScore());
+    }
+
+    public void drinkPotion (Potion potion){
+        this.setLevelMagicPotion(potion.getMagicBoost());
     }
 
     public void dead(){
