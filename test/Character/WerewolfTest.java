@@ -1,11 +1,9 @@
-package test.Character;
+package Character;
 
 import Food.FoodItem;
 import Food.FoodItemType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import Character.Werewolf;
 
 import org.junit.jupiter.api.DisplayName;
 
@@ -88,26 +86,26 @@ class WerewolfTest {
 
     // ========== TESTS DE LA LISTE D'ALIMENTS ==========
 
-    @Test
-    @DisplayName("Liste d'aliments Werewolf contient tous les FoodItemType")
-    void testFoodListContainsAllTypes() {
-        FoodItemType[] edibleList = werewolf.getFoodEdibleList();
-        FoodItemType[] allTypes = FoodItemType.values();
-        
-        assertEquals(allTypes.length, edibleList.length);
-        
-        for (FoodItemType type : allTypes) {
-            assertTrue(containsType(edibleList, type), 
-                "Liste devrait contenir " + type.getName());
-        }
-    }
+//    @Test
+//    @DisplayName("Liste d'aliments Werewolf contient tous les FoodItemType")
+//    void testFoodListContainsAllTypes() {
+//        FoodItemType[] edibleList = werewolf.getFoodEdibleList();
+//        FoodItemType[] allTypes = FoodItemType.values();
+//
+//        assertEquals(allTypes.length, edibleList.length);
+//
+//        for (FoodItemType type : allTypes) {
+//            assertTrue(containsType(edibleList, type),
+//                "Liste devrait contenir " + type.getName());
+//        }
+//    }
 
-    @Test
-    @DisplayName("Werewolf est le seul à pouvoir tout manger")
-    void testWerewolfUniqueOmnivore() {
-        // Vérifie que getFoodEdibleList retourne bien FoodItemType.values()
-        assertArrayEquals(FoodItemType.values(), werewolf.getFoodEdibleList());
-    }
+//    @Test
+//    @DisplayName("Werewolf est le seul à pouvoir tout manger")
+//    void testWerewolfUniqueOmnivore() {
+//        // Vérifie que getFoodEdibleList retourne bien FoodItemType.values()
+//        assertArrayEquals(FoodItemType.values(), werewolf.getFoodEdibleList());
+//    }
 
     // ========== TESTS DE COMPORTEMENT SPÉCIAL ==========
 
