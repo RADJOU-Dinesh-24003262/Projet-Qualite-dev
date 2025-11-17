@@ -1,4 +1,4 @@
-package Character.Manager;
+package Character.Roman;
 
 import Character.AbstractCharacter;
 

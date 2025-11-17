@@ -1,4 +1,4 @@
-package Character.Worker;
+package Character.Gallic;
 
 import Character.AbstractCharacter;
 
