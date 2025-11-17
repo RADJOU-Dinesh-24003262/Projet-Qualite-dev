@@ -1,11 +1,9 @@
-package test.Character.Gallic;
+package Character.Gallic;
 
 import Food.FoodItem;
 import Food.FoodItemType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import Character.Gallic.*;
 
 import org.junit.jupiter.api.DisplayName;
 
@@ -83,28 +81,28 @@ class GallicTest {
     @DisplayName("Blacksmith hérite de Gallic")
     void testBlacksmithIsGallic() {
         Blacksmith blacksmith = new Blacksmith();
-        assertTrue(blacksmith instanceof Gallic);
+        assertInstanceOf(Gallic.class, blacksmith);
     }
 
     @Test
     @DisplayName("Druid hérite de Gallic")
     void testDruidIsGallic() {
         Druid druid = new Druid();
-        assertTrue(druid instanceof Gallic);
+        assertInstanceOf(Gallic.class, druid);
     }
 
     @Test
     @DisplayName("Innkeeper hérite de Gallic")
     void testInnkeeperIsGallic() {
         Innkeeper innkeeper = new Innkeeper();
-        assertTrue(innkeeper instanceof Gallic);
+        assertInstanceOf(Gallic.class, innkeeper);
     }
 
     @Test
     @DisplayName("Merchant hérite de Gallic")
     void testMerchantIsGallic() {
         Merchant merchant = new Merchant();
-        assertTrue(merchant instanceof Gallic);
+        assertInstanceOf(Gallic.class, merchant);
     }
 
     // ========== TESTS DE LA LISTE D'ALIMENTS ==========

@@ -1,12 +1,9 @@
-package test.Food;
+package Food;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-
-import Food.FoodItem;
-import Food.FoodItemType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
