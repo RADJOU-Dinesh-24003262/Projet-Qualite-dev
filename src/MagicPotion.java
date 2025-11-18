@@ -69,7 +69,7 @@ public class MagicPotion {
             effects += " Also grants the power of rolling.";
         }
         if (hasIngredient(FoodItemType.IDEFIX_HAIR)) {
-            effects += " Also grants the power of metamorphosis, allowing one to become a lycanthrope.";
+            effects += " Also grants the power of metamorphosis, allowing one to become a lycanthrope (werewolf).";
         }
         return effects;
     }
@@ -84,7 +84,7 @@ public class MagicPotion {
             effects += " Also grants the power of rolling.";
         }
         if (hasIngredient(FoodItemType.IDEFIX_HAIR)) {
-            effects += " Also grants the power of metamorphosis, allowing one to become a lycanthrope.";
+            effects += " Also grants the power of metamorphosis, allowing one to become a lycanthrope (werewolf).";
         }
         return effects;
     }
