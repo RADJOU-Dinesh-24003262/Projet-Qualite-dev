@@ -2,35 +2,32 @@ package Food;
 
 public class FoodItem {
     private final FoodItemType type;
-    private Boolean isFresh;
+    private FreshnessState freshness;
 
     public FoodItem(FoodItemType type) {
         this.type = type;
-        
-        if (type == FoodItemType.FISH || type == FoodItemType.CLOVER) {
-            this.isFresh = true;
-        } else {
-            this.isFresh = null;
-        }
+        this.freshness = type.getStartingFreshness();
     }
 
     public void age() {
-        if (this.isFresh != null) {
-            this.isFresh = false;
+        if (this.freshness == FreshnessState.PASSABLY_FRESH) {
+            this.freshness = FreshnessState.NOT_FRESH;
+        } else if (this.freshness == FreshnessState.FRESH) {
+            this.freshness = FreshnessState.NOT_FRESH;
         }
     }
 
     public FoodItemType getType() { return this.type; }
-    public Boolean isFresh() { return this.isFresh; }
+    public FreshnessState getFreshness() { return this.freshness; }
 
     public String getName() {
-        if (type == FoodItemType.FISH && Boolean.FALSE.equals(isFresh)) {
-            return "Not fresh fish";
-        }
-        if (type == FoodItemType.CLOVER && Boolean.FALSE.equals(isFresh)) {
-            return "Not fresh four-leaf clover";
-        }
-        return type.getName();
+        String baseName = type.getName();
+        return switch (this.freshness) {
+            case NOT_FRESH -> baseName + " (not fresh)";
+            case PASSABLY_FRESH -> baseName + " (passably fresh)";
+            case FRESH -> baseName + " (fresh)";
+            default -> baseName;
+        };
     }
 
     public FoodType getCategory() {
