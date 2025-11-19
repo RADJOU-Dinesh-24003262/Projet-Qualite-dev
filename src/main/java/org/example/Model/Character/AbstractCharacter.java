@@ -7,10 +7,10 @@ import org.example.Model.Potion.Potion;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class AbstractCharacter{
+public abstract class AbstractCharacter {
 
-    protected enum Sex{
-        MALE,FEMALE
+    protected enum Sex {
+        MALE, FEMALE
     }
 
     protected String name;
@@ -35,28 +35,28 @@ public abstract class AbstractCharacter{
 
     protected boolean isAlive;
 
-    public AbstractCharacter(){
+    public AbstractCharacter() {
 
     }
 
-    public AbstractCharacter(String name){
+    public AbstractCharacter(String name) {
         this.name = name;
     }
 
-    public void fight(AbstractCharacter other){
+    public void fight(AbstractCharacter other) {
         int damage = Math.max(this.strength - other.stamina, 0);
         other.setHealth(other.getHealth() - damage);
     }
 
-    public void mutualFight(AbstractCharacter other){
+    public void mutualFight(AbstractCharacter other) {
         int damageToOther = Math.max(0, this.strength - other.stamina);
-        int damageToThis  = Math.max(0, other.strength - this.stamina);
+        int damageToThis = Math.max(0, other.strength - this.stamina);
 
         other.setHealth(other.getHealth() - damageToOther);
         this.setHealth(this.getHealth() - damageToThis);
     }
 
-    public void heal(AbstractCharacter other){
+    public void heal(AbstractCharacter other) {
         // TO DO : continue really
         other.setHealth(other.getHealth() + this.strength);
     }
@@ -73,7 +73,7 @@ public abstract class AbstractCharacter{
     }
 
 
-    public void eatFood(FoodItem food){
+    public void eatFood(FoodItem food) {
         if (!canEat(food) || (food.isFresh() != null && !food.isFresh())) {
             this.setHealth(getHealth() - 10);
         } else {
@@ -81,33 +81,16 @@ public abstract class AbstractCharacter{
         }
     }
 
-    public void drinkPotion (Potion potion){
-           this.setLevelMagicPotion(getLevelMagicPotion() + potion.getMagicBoost());
+    public void drinkPotion(Potion potion) {
+        this.setLevelMagicPotion(getLevelMagicPotion() + potion.getMagicBoost());
     }
 
-    public void die(){
+    public void die() {
         this.setHealth(0);
         this.setStrength(0);
         this.setStamina(0);
         this.isAlive = false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public String getName() {
@@ -191,7 +174,7 @@ public abstract class AbstractCharacter{
         this.levelMagicPotion = levelMagicPotion;
     }
 
-    public  boolean isAlive() {
+    public boolean isAlive() {
         return isAlive;
     }
 

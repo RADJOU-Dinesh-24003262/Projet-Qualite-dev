@@ -3,13 +3,12 @@ package Character.Roman;
 import org.example.Model.Character.Roman.General;
 import org.example.Model.Character.Roman.Legionary;
 import org.example.Model.Character.Roman.Prefect;
+import org.example.Model.Character.Roman.Roman;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Food.FoodItemType;
-import org.example.Model.Character.Roman.Roman;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -136,7 +135,7 @@ class RomanTest {
     void testSharedFoodItems() {
         FoodItem boar = new FoodItem(FoodItemType.BOAR);
         FoodItem wine = new FoodItem(FoodItemType.WINE);
-        
+
         assertTrue(roman.canEat(boar));
         assertTrue(roman.canEat(wine));
     }

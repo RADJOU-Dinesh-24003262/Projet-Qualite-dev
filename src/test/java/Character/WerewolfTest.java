@@ -1,14 +1,13 @@
 package Character;
 
+import org.example.Model.Character.Werewolf;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Food.FoodItemType;
-import org.example.Model.Character.Werewolf;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.junit.jupiter.api.DisplayName;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WerewolfTest {
 
@@ -30,8 +29,8 @@ class WerewolfTest {
     void testCanEatAllFoodTypes() {
         for (FoodItemType type : FoodItemType.values()) {
             FoodItem food = new FoodItem(type);
-            assertTrue(werewolf.canEat(food), 
-                "Werewolf devrait pouvoir manger " + type.getName());
+            assertTrue(werewolf.canEat(food),
+                    "Werewolf devrait pouvoir manger " + type.getName());
         }
     }
 
@@ -54,7 +53,7 @@ class WerewolfTest {
     void testCanEatMagicFood() {
         FoodItem idefix = new FoodItem(FoodItemType.IDEFIX_HAIR);
         FoodItem secret = new FoodItem(FoodItemType.SECRET_INGREDIENT);
-        
+
         assertTrue(werewolf.canEat(idefix));
         assertTrue(werewolf.canEat(secret));
     }
@@ -72,7 +71,7 @@ class WerewolfTest {
         FoodItem mistletoe = new FoodItem(FoodItemType.MISTLETOE);
         FoodItem carrots = new FoodItem(FoodItemType.CARROTS);
         FoodItem strawberries = new FoodItem(FoodItemType.STRAWBERRIES);
-        
+
         assertTrue(werewolf.canEat(mistletoe));
         assertTrue(werewolf.canEat(carrots));
         assertTrue(werewolf.canEat(strawberries));
@@ -117,7 +116,7 @@ class WerewolfTest {
         FoodItem mistletoe = new FoodItem(FoodItemType.MISTLETOE);
         FoodItem lobster = new FoodItem(FoodItemType.LOBSTER);
         FoodItem rockOil = new FoodItem(FoodItemType.ROCK_OIL);
-        
+
         assertTrue(werewolf.canEat(mistletoe));
         assertTrue(werewolf.canEat(lobster));
         assertTrue(werewolf.canEat(rockOil));

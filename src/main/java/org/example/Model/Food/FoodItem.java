@@ -20,8 +20,13 @@ public class FoodItem {
         }
     }
 
-    public FoodItemType getType() { return this.type; }
-    public Boolean isFresh() { return this.isFresh; }
+    public FoodItemType getType() {
+        return this.type;
+    }
+
+    public Boolean isFresh() {
+        return this.isFresh;
+    }
 
     public String getName() {
         if (type == FoodItemType.FISH && Boolean.FALSE.equals(isFresh)) {

@@ -1,12 +1,11 @@
 package Character.Gallic;
 
 import org.example.Model.Character.Gallic.*;
-import org.example.Model.Food.*;
-import org.example.Model.Character.Gallic.Gallic;
+import org.example.Model.Food.FoodItem;
+import org.example.Model.Food.FoodItemType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 

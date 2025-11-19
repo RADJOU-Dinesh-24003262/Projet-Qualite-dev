@@ -5,7 +5,8 @@ import org.example.Model.Food.FoodItemType;
 
 public class Gallic extends AbstractCharacter {
 
-    public Gallic() {}
+    public Gallic() {
+    }
 
     /**
      * @return FoodItemType[] The list of food the chracter can eat

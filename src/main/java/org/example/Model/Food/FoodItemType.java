@@ -1,7 +1,7 @@
 package org.example.Model.Food;
 
 public enum FoodItemType {
-    
+
     BOAR("Boar", FoodType.MEAT, 50),
     FISH("Fish", FoodType.FISH, 35),
     MISTLETOE("Mistletoe", FoodType.VEGETABLE, 10),
@@ -23,12 +23,17 @@ public enum FoodItemType {
     private final FoodType category;
     public final int nutritionalScore;
 
-    FoodItemType(String name, FoodType category,  int nutritionalScore) {
+    FoodItemType(String name, FoodType category, int nutritionalScore) {
         this.name = name;
         this.category = category;
         this.nutritionalScore = nutritionalScore;
     }
 
-    public String getName() { return name; }
-    public FoodType getCategory() { return category; }
+    public String getName() {
+        return name;
+    }
+
+    public FoodType getCategory() {
+        return category;
+    }
 }

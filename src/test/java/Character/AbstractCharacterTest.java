@@ -4,8 +4,8 @@ import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Food.FoodItemType;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,7 +48,7 @@ class AbstractCharacterTest {
     void testFightReducesDefenderHealth() {
         int initialHealth = defender.getHealth();
         attacker.fight(defender);
-        
+
         int expectedDamage = Math.max(attacker.getStrength() - defender.getStamina(), 0);
         assertEquals(initialHealth - expectedDamage, defender.getHealth());
     }
@@ -58,9 +58,9 @@ class AbstractCharacterTest {
     void testFightNoDamageWhenStaminaHigher() {
         defender.setStamina(50);
         int initialHealth = defender.getHealth();
-        
+
         attacker.fight(defender);
-        
+
         assertEquals(initialHealth, defender.getHealth());
     }
 
@@ -69,12 +69,12 @@ class AbstractCharacterTest {
     void testFightBothDamagesBothCharacters() {
         int initialHealthAttacker = attacker.getHealth();
         int initialHealthDefender = defender.getHealth();
-        
+
         attacker.mutualFight(defender);
-        
+
         int expectedDamageToDefender = Math.max(0, attacker.getStrength() - defender.getStamina());
         int expectedDamageToAttacker = Math.max(0, defender.getStrength() - attacker.getStamina());
-        
+
         assertEquals(initialHealthDefender - expectedDamageToDefender, defender.getHealth());
         assertEquals(initialHealthAttacker - expectedDamageToAttacker, attacker.getHealth());
     }
@@ -84,9 +84,9 @@ class AbstractCharacterTest {
     void testHealIncreasesHealth() {
         defender.setHealth(50);
         int initialHealth = defender.getHealth();
-        
+
         attacker.heal(defender);
-        
+
         assertEquals(initialHealth + attacker.getStrength(), defender.getHealth());
     }
 
@@ -117,7 +117,7 @@ class AbstractCharacterTest {
     void testEatFoodBugWithHunger() {
         attacker.setHealth(100);
         attacker.setHunger(30);
-        
+
         attacker.eatFood(boar);
 
         assertEquals(30 + boar.getNutritionalScore(), attacker.getHunger());
@@ -151,7 +151,7 @@ class AbstractCharacterTest {
     @DisplayName("Dead: Met tous les attributs à 0 et isAlive à false")
     void testDead() {
         attacker.die();
-        
+
         assertEquals(0, attacker.getHealth());
         assertEquals(0, attacker.getStrength());
         assertEquals(0, attacker.getStamina());
@@ -181,10 +181,10 @@ class AbstractCharacterTest {
     void testEquals() {
         TestCharacter char1 = new TestCharacter("Test");
         TestCharacter char2 = new TestCharacter("Test");
-        
+
         char1.setAge(25);
         char2.setAge(25);
-        
+
         assertEquals(char1, char2);
     }
 
@@ -193,7 +193,7 @@ class AbstractCharacterTest {
     void testHashCode() {
         TestCharacter char1 = new TestCharacter("Test");
         TestCharacter char2 = new TestCharacter("Test");
-        
+
         assertEquals(char1.hashCode(), char2.hashCode());
     }
 
