@@ -1,7 +1,6 @@
 package org.example.Model.Character;
 
-import org.example.Model.Food.FoodItem;
-import org.example.Model.Food.FoodItemType;
+import org.example.Model.Food.*;
 import org.example.Model.Potion.Potion;
 
 import java.util.Arrays;
@@ -74,11 +73,12 @@ public abstract class AbstractCharacter {
 
 
     public void eatFood(FoodItem food) {
-        if (!canEat(food) || (food.isFresh() != null && !food.isFresh())) {
+        if (!canEat(food) || (food.freshnessApplicable() && !food.isFresh())) {
             this.setHealth(getHealth() - 10);
         } else {
             this.setHunger(getHunger() + food.getNutritionalScore());
         }
+        new FoodItem(FoodItemType.BOAR);
     }
 
     public void drinkPotion(Potion potion) {
