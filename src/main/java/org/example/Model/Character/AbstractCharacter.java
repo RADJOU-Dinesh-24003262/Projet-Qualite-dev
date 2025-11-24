@@ -1,11 +1,15 @@
-package Character;
+package org.example.Model.Character;
 
+import org.example.Model.Food.*;
+import org.example.Model.Potion.Potion;
+
+import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class AbstractCharacter{
+public abstract class AbstractCharacter {
 
-    protected enum Sex{
-        MALE,FEMALE
+    protected enum Sex {
+        MALE, FEMALE
     }
 
     protected String name;
@@ -30,65 +34,63 @@ public abstract class AbstractCharacter{
 
     protected boolean isAlive;
 
-    public AbstractCharacter(){
+    public AbstractCharacter() {
 
     }
 
-    public AbstractCharacter(String name){
+    public AbstractCharacter(String name) {
         this.name = name;
     }
 
-    public void fight(AbstractCharacter other){
+    public void fight(AbstractCharacter other) {
         int damage = Math.max(this.strength - other.stamina, 0);
         other.setHealth(other.getHealth() - damage);
     }
 
-    public void fightBoth(AbstractCharacter other){
+    public void mutualFight(AbstractCharacter other) {
         int damageToOther = Math.max(0, this.strength - other.stamina);
-        int damageToThis  = Math.max(0, other.strength - this.stamina);
+        int damageToThis = Math.max(0, other.strength - this.stamina);
 
         other.setHealth(other.getHealth() - damageToOther);
         this.setHealth(this.getHealth() - damageToThis);
     }
 
-    public void heal(AbstractCharacter other){
+    public void heal(AbstractCharacter other) {
         // TO DO : continue really
         other.setHealth(other.getHealth() + this.strength);
     }
 
-    public void eat(){
-        // TO DO : en fonction de l'alimentation
-        this.setHealth(getHealth() + 1);
+    protected abstract FoodItemType[] getFoodEdibleList();
+
+    // Public method to check if the food is edible
+    public boolean canEat(FoodItem food) {
+        if (food == null || food.getType() == null) {
+            return false; // Defensive null check
+        }
+        // Convert array to List and check if it contains the type
+        return Arrays.asList(getFoodEdibleList()).contains(food.getType());
     }
 
-    public void drink (MagicPotion potion){
-        this.setLevelMagicPotion(potion);
+
+    public void eatFood(FoodItem food) {
+        if (!canEat(food) || (food.freshnessApplicable() && !food.isFresh())) {
+            this.setHealth(getHealth() - 10);
+        } else {
+            this.setHunger(getHunger() + food.getNutritionalScore());
+        }
+        new FoodItem(FoodItemType.BOAR);
     }
 
-    public void dead(){
+    public void drinkPotion(Potion potion) {
+        this.setLevelMagicPotion(getLevelMagicPotion() + potion.getMagicBoost());
+    }
+
+    public void die() {
         this.setHealth(0);
         this.setStrength(0);
         this.setStamina(0);
-        this.setHealth(0);
         this.isAlive = false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public String getName() {
@@ -170,6 +172,10 @@ public abstract class AbstractCharacter{
 
     public void setLevelMagicPotion(int levelMagicPotion) {
         this.levelMagicPotion = levelMagicPotion;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 
     @Override
