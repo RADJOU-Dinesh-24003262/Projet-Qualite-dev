@@ -1,4 +1,4 @@
-package Places;
+package org.example.Model.Places;
 
 public enum TypePlace {
     gallicVillage, // village gaulois

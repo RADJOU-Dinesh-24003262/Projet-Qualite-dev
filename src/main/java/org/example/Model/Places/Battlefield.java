@@ -1,8 +1,8 @@
-package Places;
+package org.example.Model.Places;
 
-import Character.Werewolves;
 import java.util.ArrayList;
-import Character.AbstractCharacter;
+import org.example.Model.Character.AbstractCharacter;
+
 
 public class Battlefield extends AbstractPlace {
 

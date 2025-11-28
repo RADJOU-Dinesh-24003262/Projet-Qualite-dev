@@ -1,12 +1,9 @@
-package Places;
+package org.example.Model.Places;
 
-import Places.AbstractPlace;
-import Character.Werewolves;
+import org.example.Model.Character.Gallic.*;
 import java.util.ArrayList;
-import Character.Gallic.Gallic;
-import Character.AbstractCharacter;
-
-
+import org.example.Model.Character.AbstractCharacter;
+import org.example.Model.Character.Werewolf;
 
 public class GallicVillage extends AbstractPlace {
     private String clanChief;
@@ -18,7 +15,7 @@ public class GallicVillage extends AbstractPlace {
             if (character == null) {
                 throw new IllegalArgumentException("La liste contient un personnage null");
             }
-            if (!(character instanceof Gallic) && !(character instanceof Werewolves)) {
+            if (!(character instanceof Gallic) && !(character instanceof Werewolf)) {
                 throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un village gaulois");
             }
         }

@@ -1,12 +1,11 @@
-package Places;
+package org.example.Model.Places;
 
 import java.util.ArrayList;
-import Character.AbstractCharacter;
-import Character.Roman.General;
-import Character.Roman.RomanLegionary;
-import Food.AbstractFood;
-import Character.Werewolves;
-import Character.Gallic.Gallic;
+import org.example.Model.Character.AbstractCharacter;
+import org.example.Model.Character.Roman.*;
+import org.example.Model.Character.Gallic.*;
+import org.example.Model.Character.Werewolf;
+import org.example.Model.Food.FoodItem;
 
 public abstract class AbstractPlace{
     private TypePlace type;
@@ -33,7 +32,7 @@ public abstract class AbstractPlace{
         if (this.type == TypePlace.gallicVillage) {
             if (character == null) {
                 throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Gallic || character instanceof Werewolves) {
+            } else if (character instanceof Gallic || character instanceof Werewolf) {
                 presentCharacters.add(character);
             } else {
                 throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un village gaulois");
@@ -43,7 +42,7 @@ public abstract class AbstractPlace{
         if (this.type == TypePlace.romanFortifiedCamp) {
             if (character == null) {
                 throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof RomanLegionary || character instanceof General || character instanceof Werewolves) {
+            } else if (character instanceof Legionary || character instanceof General || character instanceof Werewolf) {
                 presentCharacters.add(character);
             } else {
                 throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un camp retranché romain");
@@ -53,7 +52,7 @@ public abstract class AbstractPlace{
         if (this.type == TypePlace.romanCity) {
             if (character == null) {
                 throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Roman || character instanceof Werewolves) {
+            } else if (character instanceof Roman || character instanceof Werewolf) {
                 presentCharacters.add(character);
             } else {
                 throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans une ville romaine");
@@ -73,7 +72,7 @@ public abstract class AbstractPlace{
         if (this.type == TypePlace.enclosure) {
             if (character == null) {
                 throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Werewolves) {
+            } else if (character instanceof Werewolf) {
                 presentCharacters.add(character);
             } else {
                 throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un camp retranché romain");
@@ -94,11 +93,12 @@ public abstract class AbstractPlace{
     }
 
     public void healCharacter(AbstractCharacter character) {
-        character.heal();
+        character.heal(character);
     }
 
-    public void feedCharacter(AbstractCharacter character, AbstractFood food) {
-        character.eat(food);
+    public void feedCharacter(AbstractCharacter character, FoodItem food) {
+        character.eatFood(food);
         this.presentFoods.remove(food.toString());
     }
 }
+

@@ -1,12 +1,9 @@
-package Places;
+package org.example.Model.Places;
 
-import Character.Roman.Roman;
-import Character.Werewolves;
+import org.example.Model.Character.Roman.*;
+import org.example.Model.Character.Gallic.*;
 import java.util.ArrayList;
-import Character.Gallic.Gallic;
-import Character.AbstractCharacter;
-
-import java.util.ArrayList;
+import org.example.Model.Character.AbstractCharacter;
 
 public class GalloRomanVillage extends AbstractPlace{
     private String clanChief;
