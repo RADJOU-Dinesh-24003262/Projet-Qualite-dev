@@ -96,6 +96,10 @@ public class Potion {
         return "Transforms into a granite statue.";
     }
 
+    public int getMagicBoost() {
+        return 50;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Magic potion containing: ");
