@@ -1,11 +1,12 @@
-package org.example.Model.Character;
+package org.example.Model.ClanLeader;
 
+import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Character.Gallic.Druid;
 import org.example.Model.Character.Gallic.Gallic;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Potion.Potion;
 
-public class ClanLeader {
+public final class ClanLeader {
 
     public enum Sex {
         MALE, FEMALE
@@ -16,7 +17,20 @@ public class ClanLeader {
     private int age;
     // private Place place;
 
+    private static void validateParameters(String name, Sex sex, int age) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be null or empty");
+        }
+        if (sex == null) {
+            throw new IllegalArgumentException("Sex cannot be null");
+        }
+        if (age < 0) {
+            throw new IllegalArgumentException("Age cannot be negative");
+        }
+    }
+
     public ClanLeader(String name, Sex sex, int age) {
+        validateParameters(name, sex, age);
         this.name = name;
         this.sex = sex;
         this.age = age;
