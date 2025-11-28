@@ -1,9 +1,12 @@
 package org.example.Model.Places;
 
 import java.util.ArrayList;
+
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Roman.*;
-import org.example.Model.Character.Gallic.*;
+import org.example.Model.Character.Gallic.Gallic;
+import org.example.Model.Character.Roman.General;
+import org.example.Model.Character.Roman.Legionary;
+import org.example.Model.Character.Roman.Roman;
 import org.example.Model.Character.Werewolf;
 import org.example.Model.Food.FoodItem;
 
@@ -23,9 +26,10 @@ public abstract class AbstractPlace{
         this.type = type;
         this.name = name;
         this.surface = surface;
-        this.presentCharacters = presentCharacters;
+        this.presentCharacters = new ArrayList<>(presentCharacters);
         this.numberPresentCharacters = presentCharacters.size();
-        this.presentFoods = presentFoods;
+        this.presentFoods = new ArrayList<>(presentFoods);
+        this.numberPresentFoods = presentFoods.size();
     }
 
     public void addCharacter(AbstractCharacter character) {
@@ -89,7 +93,7 @@ public abstract class AbstractPlace{
     }
 
     public void deleteCharacter(AbstractCharacter character) {
-        presentCharacters.remove(character.toString());
+        presentCharacters.remove(character);
     }
 
     public void healCharacter(AbstractCharacter character) {
@@ -99,6 +103,35 @@ public abstract class AbstractPlace{
     public void feedCharacter(AbstractCharacter character, FoodItem food) {
         character.eatFood(food);
         this.presentFoods.remove(food.toString());
+    }
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public int getSurface() {
+        return surface;
+    }
+
+    public int getNumberPresentCharacters() {
+        return numberPresentCharacters;
+    }
+
+    public int getNumberPresentFoods() {
+        return numberPresentFoods;
+    }
+
+    public TypePlace getType() {
+        return type;
+    }
+
+    public ArrayList<AbstractCharacter> getPresentCharacters() {
+        return new ArrayList<>(presentCharacters);
+    }
+
+    public ArrayList<String> getPresentFoods() {
+        return new ArrayList<>(presentFoods);
     }
 }
 

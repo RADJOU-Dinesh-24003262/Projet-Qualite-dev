@@ -1,18 +1,22 @@
 package org.example.Model.Places;
 
-import org.example.Model.Character.Roman.*;
 import java.util.ArrayList;
+
 import org.example.Model.Character.AbstractCharacter;
+import org.example.Model.Character.Roman.Roman;
 import org.example.Model.Character.Werewolf;
 
 
-public class RomanCity extends AbstractPlace{
+public class RomanCity extends AbstractPlace {
     private String clanChief;
 
     public RomanCity(String clanChief, String name, int surface, ArrayList<AbstractCharacter> presentCharacters, ArrayList<String> presentFoods) {
-        super(TypePlace.romanCity, name, surface, presentCharacters, presentFoods);
+        super(TypePlace.romanCity, name, surface, validateCharacters(presentCharacters), presentFoods);
         this.clanChief = clanChief;
-        for (AbstractCharacter character : presentCharacters) {
+    }
+
+    private static ArrayList<AbstractCharacter> validateCharacters(ArrayList<AbstractCharacter> characters) {
+        for (AbstractCharacter character : characters) {
             if (character == null) {
                 throw new IllegalArgumentException("La liste contient un personnage null");
             }
@@ -20,5 +24,10 @@ public class RomanCity extends AbstractPlace{
                 throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans une ville romaine.");
             }
         }
+        return characters;
+    }
+
+    public String getClanChief() {
+        return clanChief;
     }
 }

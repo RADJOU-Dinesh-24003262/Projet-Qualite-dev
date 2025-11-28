@@ -79,7 +79,6 @@ public abstract class AbstractCharacter {
         } else {
             this.setHunger(getHunger() + food.getNutritionalScore());
         }
-        new FoodItem(FoodItemType.BOAR);
     }
 
     public void drinkPotion(Potion potion) {
