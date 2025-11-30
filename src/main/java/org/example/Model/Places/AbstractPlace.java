@@ -2,103 +2,207 @@ package org.example.Model.Places;
 
 import java.util.ArrayList;
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Roman.*;
-import org.example.Model.Character.Gallic.*;
-import org.example.Model.Character.Werewolf;
 import org.example.Model.Food.FoodItem;
 
-public abstract class AbstractPlace{
+/**
+ * Abstract base class representing a place that can contain characters and food items.
+ * Each place has specific rules about which types of characters can be present.
+ */
+public abstract class AbstractPlace {
     private TypePlace type;
     private String name;
     private int surface;
+    private String clanChief; // null for battlefields
     private ArrayList<AbstractCharacter> presentCharacters;
-    private int numberPresentCharacters;
-    private ArrayList<String> presentFoods;
-    private int numberPresentFoods;
+    private ArrayList<FoodItem> presentFoods;
 
-    protected AbstractPlace() {
-    }
-
-    public AbstractPlace(TypePlace type, String name, int surface, ArrayList<AbstractCharacter> presentCharacters, ArrayList<String> presentFoods) {
+    /**
+     * Constructor for places with a clan chief
+     * @param type The type of place
+     * @param name The name of the place
+     * @param surface The surface area
+     * @param clanChief The name of the clan chief
+     * @param presentCharacters Initial list of characters
+     * @param presentFoods Initial list of food items
+     */
+    protected AbstractPlace(TypePlace type, String name, int surface, String clanChief,
+                            ArrayList<AbstractCharacter> presentCharacters, ArrayList<FoodItem> presentFoods) {
         this.type = type;
         this.name = name;
         this.surface = surface;
-        this.presentCharacters = presentCharacters;
-        this.numberPresentCharacters = presentCharacters.size();
-        this.presentFoods = presentFoods;
+        this.clanChief = clanChief;
+        this.presentCharacters = presentCharacters != null ? presentCharacters : new ArrayList<>();
+        this.presentFoods = presentFoods != null ? presentFoods : new ArrayList<>();
+
+        // Validate initial characters
+        for (AbstractCharacter character : this.presentCharacters) {
+            validateCharacter(character);
+        }
     }
 
+    /**
+     * Constructor for places without a clan chief (battlefields)
+     * @param type The type of place
+     * @param name The name of the place
+     * @param surface The surface area
+     * @param presentCharacters Initial list of characters
+     * @param presentFoods Initial list of food items
+     */
+    protected AbstractPlace(TypePlace type, String name, int surface,
+                            ArrayList<AbstractCharacter> presentCharacters, ArrayList<FoodItem> presentFoods) {
+        this(type, name, surface, null, presentCharacters, presentFoods);
+    }
+
+    /**
+     * Template method to validate if a character can be added to this place.
+     * Must be implemented by subclasses to define specific rules.
+     * @param character The character to validate
+     * @return true if the character is allowed, false otherwise
+     */
+    protected abstract boolean canContainCharacter(AbstractCharacter character);
+
+    /**
+     * Validates and adds a character to this place
+     * @param character The character to add
+     * @throws IllegalArgumentException if character is null or not allowed
+     */
     public void addCharacter(AbstractCharacter character) {
-        if (this.type == TypePlace.gallicVillage) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Gallic || character instanceof Werewolf) {
-                presentCharacters.add(character);
-            } else {
-                throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un village gaulois");
-            }
-        }
+        validateCharacter(character);
+        presentCharacters.add(character);
+    }
 
-        if (this.type == TypePlace.romanFortifiedCamp) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Legionary || character instanceof General || character instanceof Werewolf) {
-                presentCharacters.add(character);
-            } else {
-                throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un camp retranché romain");
-            }
+    /**
+     * Validates if a character can be present in this place
+     * @param character The character to validate
+     * @throws IllegalArgumentException if character is null or not allowed
+     */
+    private void validateCharacter(AbstractCharacter character) {
+        if (character == null) {
+            throw new IllegalArgumentException("Character cannot be null");
         }
-
-        if (this.type == TypePlace.romanCity) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Roman || character instanceof Werewolf) {
-                presentCharacters.add(character);
-            } else {
-                throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans une ville romaine");
-            }
-        }
-
-        if (this.type == TypePlace.galloRomanVillage) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Roman || character instanceof Gallic) {
-                presentCharacters.add(character);
-            } else {
-                throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans une bourgade gallo-romaine");
-            }
-        }
-
-        if (this.type == TypePlace.enclosure) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            } else if (character instanceof Werewolf) {
-                presentCharacters.add(character);
-            } else {
-                throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans un camp retranché romain");
-            }
-        }
-
-        if (this.type == TypePlace.battlefield) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            } else {
-                presentCharacters.add(character);
-            }
+        if (!canContainCharacter(character)) {
+            throw new IllegalArgumentException("Character of type " + character.getClass().getSimpleName() +
+                    " cannot be present in " + type);
         }
     }
 
+    /**
+     * Removes a character from this place
+     * @param character The character to remove
+     */
     public void deleteCharacter(AbstractCharacter character) {
-        presentCharacters.remove(character.toString());
+        presentCharacters.remove(character);
     }
 
+    /**
+     * Heals a character present in this place
+     * @param character The character to heal
+     */
     public void healCharacter(AbstractCharacter character) {
-        character.heal(character);
+        if (presentCharacters.contains(character)) {
+            character.heal(character);
+        }
     }
 
+    /**
+     * Feeds a character with a food item present in this place
+     * @param character The character to feed
+     * @param food The food item to consume
+     */
     public void feedCharacter(AbstractCharacter character, FoodItem food) {
-        character.eatFood(food);
-        this.presentFoods.remove(food.toString());
+        if (presentCharacters.contains(character) && presentFoods.contains(food)) {
+            character.eatFood(food);
+            presentFoods.remove(food);
+        }
+    }
+
+    /**
+     * Heals all characters present in this place
+     */
+    public void healAllCharacters() {
+        for (AbstractCharacter character : presentCharacters) {
+            character.heal(character);
+        }
+    }
+
+    /**
+     * Displays all characteristics of this place, including characters and food
+     */
+    public void displayCharacteristics() {
+        System.out.println("=== " + name + " ===");
+        System.out.println("Type: " + type);
+        System.out.println("Surface: " + surface + " m²");
+        if (clanChief != null) {
+            System.out.println("Clan Chief: " + clanChief);
+        }
+        System.out.println("Number of characters present: " + getNumberPresentCharacters());
+
+        System.out.println("\n--- Characters ---");
+        for (AbstractCharacter character : presentCharacters) {
+            System.out.println(character.toString());
+        }
+
+        System.out.println("\n--- Food Items ---");
+        System.out.println("Number of food items: " + getNumberPresentFoods());
+        for (FoodItem food : presentFoods) {
+            System.out.println("- " + food.toString());
+        }
+        System.out.println("==================\n");
+    }
+
+    // Getters
+    public TypePlace getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSurface() {
+        return surface;
+    }
+
+    public String getClanChief() {
+        return clanChief;
+    }
+
+    public int getNumberPresentCharacters() {
+        return presentCharacters.size();
+    }
+
+    public ArrayList<AbstractCharacter> getPresentCharacters() {
+        return new ArrayList<>(presentCharacters); // Return a copy for encapsulation
+    }
+
+    public int getNumberPresentFoods() {
+        return presentFoods.size();
+    }
+
+    public ArrayList<FoodItem> getPresentFoods() {
+        return new ArrayList<>(presentFoods); // Return a copy for encapsulation
+    }
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurface(int surface) {
+        this.surface = surface;
+    }
+
+    public void setClanChief(String clanChief) {
+        this.clanChief = clanChief;
+    }
+
+    public void addFood(FoodItem food) {
+        if (food != null) {
+            presentFoods.add(food);
+        }
+    }
+
+    public void removeFood(FoodItem food) {
+        presentFoods.remove(food);
     }
 }
-

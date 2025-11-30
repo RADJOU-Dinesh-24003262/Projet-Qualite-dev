@@ -1,24 +1,37 @@
 package org.example.Model.Places;
 
-import org.example.Model.Character.Roman.*;
+import org.example.Model.Character.Roman.Roman;
 import java.util.ArrayList;
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Character.Werewolf;
+import org.example.Model.Food.FoodItem;
 
+/**
+ * Represents a Roman city that can only contain Roman characters and fantasy creatures.
+ */
+public class RomanCity extends AbstractPlace {
 
-public class RomanCity extends AbstractPlace{
-    private String clanChief;
+    /**
+     * Creates a new Roman city
+     * @param clanChief The name of the city governor
+     * @param name The name of the city
+     * @param surface The surface area
+     * @param presentCharacters Initial list of characters (must be Roman or Werewolf)
+     * @param presentFoods Initial list of food items
+     */
+    public RomanCity(String clanChief, String name, int surface, 
+                    ArrayList<AbstractCharacter> presentCharacters, ArrayList<FoodItem> presentFoods) {
+        super(TypePlace.romanCity, name, surface, clanChief, presentCharacters, presentFoods);
+    }
 
-    public RomanCity(String clanChief, String name, int surface, ArrayList<AbstractCharacter> presentCharacters, ArrayList<String> presentFoods) {
-        super(TypePlace.romanCity, name, surface, presentCharacters, presentFoods);
-        this.clanChief = clanChief;
-        for (AbstractCharacter character : presentCharacters) {
-            if (character == null) {
-                throw new IllegalArgumentException("La liste contient un personnage null");
-            }
-            if (!(character instanceof Roman) && !(character instanceof Werewolf)) {
-                throw new IllegalArgumentException("Le personnage " + character.getClass().getName() + "ne peux pas être présent dans une ville romaine.");
-            }
-        }
+    /**
+     * Validates if a character can be present in a Roman city.
+     * Only Roman characters and Werewolves are allowed.
+     * @param character The character to validate
+     * @return true if the character is Roman or Werewolf, false otherwise
+     */
+    @Override
+    protected boolean canContainCharacter(AbstractCharacter character) {
+        return character instanceof Roman || character instanceof Werewolf;
     }
 }
