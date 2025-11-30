@@ -20,7 +20,7 @@ public class Enclosure extends AbstractPlace {
      * @param presentFoods Initial list of food items
      */
     public Enclosure(String clanChief, String name, int surface, 
-                    ArrayList<AbstractCharacter> presentCharacters, ArrayList<FoodItem> presentFoods) {
+                    ArrayList<Werewolf> presentCharacters, ArrayList<FoodItem> presentFoods) {
         super(TypePlace.enclosure, name, surface, clanChief, presentCharacters, presentFoods);
     }
 
