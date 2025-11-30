@@ -1,7 +1,13 @@
 package org.example.Model.Places;
 
 import java.util.ArrayList;
+
 import org.example.Model.Character.AbstractCharacter;
+import org.example.Model.Character.Gallic.Gallic;
+import org.example.Model.Character.Roman.General;
+import org.example.Model.Character.Roman.Legionary;
+import org.example.Model.Character.Roman.Roman;
+import org.example.Model.Character.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**
@@ -26,12 +32,12 @@ public abstract class AbstractPlace {
      * @param presentFoods Initial list of food items
      */
     protected AbstractPlace(TypePlace type, String name, int surface, String clanChief,
-                            ArrayList<AbstractCharacter> presentCharacters, ArrayList<FoodItem> presentFoods) {
+                            ArrayList<? extends AbstractCharacter> presentCharacters, ArrayList<FoodItem> presentFoods) {
         this.type = type;
         this.name = name;
         this.surface = surface;
         this.clanChief = clanChief;
-        this.presentCharacters = presentCharacters != null ? presentCharacters : new ArrayList<>();
+        this.presentCharacters = presentCharacters != null ? new ArrayList<>(presentCharacters) : new ArrayList<>();
         this.presentFoods = presentFoods != null ? presentFoods : new ArrayList<>();
 
         // Validate initial characters
@@ -91,6 +97,7 @@ public abstract class AbstractPlace {
      * @param character The character to remove
      */
     public void deleteCharacter(AbstractCharacter character) {
+        presentCharacters.remove(character);
         presentCharacters.remove(character);
     }
 

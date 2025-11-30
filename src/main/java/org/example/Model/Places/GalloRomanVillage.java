@@ -3,6 +3,7 @@ package org.example.Model.Places;
 import org.example.Model.Character.Roman.Roman;
 import org.example.Model.Character.Gallic.Gallic;
 import java.util.ArrayList;
+
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItem;
 

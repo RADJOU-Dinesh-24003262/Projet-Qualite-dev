@@ -1,10 +1,11 @@
 package org.example.Model.Character;
 
-import org.example.Model.Food.*;
-import org.example.Model.Potion.Potion;
-
 import java.util.Arrays;
 import java.util.Objects;
+
+import org.example.Model.Food.FoodItem;
+import org.example.Model.Food.FoodItemType;
+import org.example.Model.Potion.Potion;
 
 public abstract class AbstractCharacter {
 

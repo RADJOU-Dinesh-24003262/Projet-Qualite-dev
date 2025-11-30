@@ -1,9 +1,10 @@
 package org.example.Model.Places;
 
-import org.example.Model.Character.Werewolf;
 import java.util.ArrayList;
+
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItem;
+import org.example.Model.Character.Werewolf;
 
 /**
  * Represents an enclosure that can only contain fantasy creatures.

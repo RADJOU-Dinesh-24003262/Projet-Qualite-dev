@@ -1,6 +1,7 @@
 package org.example.Model.Places;
 
 import java.util.ArrayList;
+
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItem;
 
