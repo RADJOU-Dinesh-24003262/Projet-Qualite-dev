@@ -9,7 +9,7 @@ import org.example.Model.Potion.Potion;
 
 public abstract class AbstractCharacter {
 
-    protected enum Sex {
+    public enum Sex {
         MALE, FEMALE
     }
 
