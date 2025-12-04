@@ -3,11 +3,6 @@ package org.example.Model.Places;
 import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Gallic.Gallic;
-import org.example.Model.Character.Roman.General;
-import org.example.Model.Character.Roman.Legionary;
-import org.example.Model.Character.Roman.Roman;
-import org.example.Model.Character.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**

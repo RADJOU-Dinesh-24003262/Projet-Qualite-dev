@@ -1,9 +1,8 @@
-package Character;
+package org.example.Model.Character;
 
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Food.FoodItemType;
-import org.example.Model.Food.FreshnessState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

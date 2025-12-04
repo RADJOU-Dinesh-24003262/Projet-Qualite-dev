@@ -1,6 +1,6 @@
-package Character;
+package org.example.Model.Character;
 
-import org.example.Model.Character.Werewolf;
+import org.example.Model.Character.Werewolf.Werewolf;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Food.FoodItemType;
 import org.junit.jupiter.api.BeforeEach;

@@ -5,9 +5,7 @@ import org.example.Model.Character.Roman.General;
 import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Roman.General;
-import org.example.Model.Character.Roman.Legionary;
-import org.example.Model.Character.Werewolf;
+import org.example.Model.Character.Werewolf.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**
