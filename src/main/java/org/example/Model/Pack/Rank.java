@@ -1,4 +1,4 @@
-package org.example.Pack;
+package org.example.Model.Pack;
 
 public enum Rank {
     ALPHA('α', 8),

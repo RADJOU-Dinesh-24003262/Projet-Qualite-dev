@@ -2,7 +2,7 @@ package org.example.Model.Character.Werewolf;
 
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItemType;
-import org.example.Pack.Pack;
+import org.example.Model.Pack.Pack;
 
 public class Werewolf extends AbstractCharacter {
 

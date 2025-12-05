@@ -1,6 +1,6 @@
 package org.example.Model.Character.Werewolf;
 
-import org.example.Pack.Pack;
+import org.example.Model.Pack.Pack;
 
 public class WerewolfPackBehaviour {
 

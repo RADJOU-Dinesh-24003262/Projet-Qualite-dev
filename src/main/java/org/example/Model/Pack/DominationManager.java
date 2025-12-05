@@ -1,4 +1,4 @@
-package org.example.Pack;
+package org.example.Model.Pack;
 
 import org.example.Model.Character.Werewolf.Werewolf;
 

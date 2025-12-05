@@ -1,4 +1,4 @@
-package org.example.Pack;
+package org.example.Model.Pack;
 
 import java.util.*;
 import java.util.stream.Collectors;

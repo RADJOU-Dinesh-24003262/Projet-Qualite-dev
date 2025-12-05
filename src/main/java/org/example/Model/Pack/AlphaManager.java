@@ -1,4 +1,4 @@
-package org.example.Pack;
+package org.example.Model.Pack;
 
 import java.util.Comparator;
 import org.example.Model.Character.AbstractCharacter;
