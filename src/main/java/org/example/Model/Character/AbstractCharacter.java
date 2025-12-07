@@ -6,6 +6,7 @@ import java.util.Objects;
 import org.example.Model.Food.FoodItem;
 import org.example.Model.Food.FoodItemType;
 import org.example.Model.Potion.Potion;
+import org.example.Model.Places.AbstractPlace;
 
 public abstract class AbstractCharacter {
 
@@ -35,12 +36,22 @@ public abstract class AbstractCharacter {
 
     protected boolean isAlive;
 
+    protected AbstractPlace originPlace;
+
     public AbstractCharacter() {
 
     }
 
     public AbstractCharacter(String name) {
         this.name = name;
+    }
+
+    public void setOriginPlace(AbstractPlace place) {
+        this.originPlace = place;
+    }
+
+    public AbstractPlace getOriginPlace() {
+        return this.originPlace;
     }
 
     public void fight(AbstractCharacter other) {

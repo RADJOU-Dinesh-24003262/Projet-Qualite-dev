@@ -4,6 +4,7 @@ import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Character.Gallic.Druid;
 import org.example.Model.Character.Gallic.Gallic;
 import org.example.Model.Food.FoodItem;
+import org.example.Model.Places.AbstractPlace;
 import org.example.Model.Potion.Potion;
 
 public final class ClanLeader {
@@ -15,7 +16,7 @@ public final class ClanLeader {
     private String name;
     private Sex sex;
     private int age;
-    // private Place place;
+    private AbstractPlace place;
 
     private static void validateParameters(String name, Sex sex, int age) {
         if (name == null || name.isEmpty()) {
@@ -29,19 +30,24 @@ public final class ClanLeader {
         }
     }
 
-    public ClanLeader(String name, Sex sex, int age) {
-        validateParameters(name, sex, age);
+    public ClanLeader(String name, Sex sex, int age, AbstractPlace place) {
         this.name = name;
         this.sex = sex;
         this.age = age;
+        this.place = place;
+        // Optionnel : Mettre à jour le nom du chef dans le lieu
+        if (place != null) {
+            place.setClanChief(this.name);
+        }
     }
 
     
     public void examinePlace() {
-    /*
-        - Examine le lieu du chef de clan.
-        - Affiche les caractéristiques du lieu ainsi que la liste des personnages et des aliments.
-    */
+        if (place != null) {
+            place.displayCharacteristics();
+        } else {
+            System.out.println("Ce chef n'a pas de lieu attribué !");
+        }
     }
 
     
@@ -59,7 +65,14 @@ public final class ClanLeader {
     }
 
     public void healCharacter(AbstractCharacter character) {
-        // Soigne un personnage spécifique du lieu.
+        if (place != null) {
+            System.out.println(name + " soigne tout le monde à " + place.getName());
+            place.healAllCharacters();
+        }
+    }
+
+    public AbstractPlace getPlace() {
+        return place;
     }
 
     public void feedAllCharacters(FoodItem food) {
