@@ -1,7 +1,5 @@
 package org.example.Model.Character.Gallic;
 
-import org.example.Model.Potion.Potion;
-
 import org.example.Model.Character.Interface.Combatant;
 import org.example.Model.Character.Interface.Leader;
 import org.example.Model.Character.Interface.Worker;
