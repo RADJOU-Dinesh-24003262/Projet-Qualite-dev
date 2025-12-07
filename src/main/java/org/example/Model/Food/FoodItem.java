@@ -47,4 +47,9 @@ public class FoodItem {
     public int getNutritionalScore() {
         return type.nutritionalScore;
     }
+
+    public String toString() {
+        return getName();
+    }
+
 }
