@@ -15,10 +15,10 @@ public class WerewolfStats {
 
     /** Compute the werewolf’s overall level */
     public double calculateLevel() {
-        double base = (w.getStrength() * W_STRENGTH)
-                + (w.getDominationFactor() * W_DOMINATION)
-                + (w.getRank() * W_RANK)
-                + (w.getHealth() * W_HEALTH);
+        double base = w.getStrength() * W_STRENGTH
+                + w.getDominationFactor() * W_DOMINATION
+                + w.getRank() * W_RANK
+                + w.getHealth() * W_HEALTH;
 
         return base * w.getAgeCategory().getMultiplier();
     }

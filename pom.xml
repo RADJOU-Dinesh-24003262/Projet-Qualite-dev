@@ -99,7 +99,6 @@
                     <failOnError>true</failOnError>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 

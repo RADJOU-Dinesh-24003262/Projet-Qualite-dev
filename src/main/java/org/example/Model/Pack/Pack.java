@@ -30,7 +30,7 @@ public class Pack {
         this.hierarchyManager = new HierarchyManager();
         this.alphaManager = new AlphaManager(hierarchyManager, alphaMale, alphaFemale);
         this.rankAssigner = new RankAssigner(hierarchyManager);
-        this.reproductionManager = new ReproductionManager(hierarchyManager, alphaManager);
+        this.reproductionManager = new ReproductionManager(hierarchyManager);
         this.dominationManager = new DominationManager(hierarchyManager, alphaManager);
         this.omegaManager = new OmegaManager(hierarchyManager);
         this.packDisplay = new PackDisplay(hierarchyManager, alphaManager);
@@ -72,7 +72,9 @@ public class Pack {
         return reproductionManager.reproduce();
     }
 
-    /** Create a new alpha couple by dethroning the current male alpha (if needed). */
+    /**
+     * Create a new alpha couple by dethroning the current male alpha (if needed).
+     */
     public void formNewAlphaMale(Werewolf newAlphaMale) {
         alphaManager.formNewAlphaCouple(newAlphaMale);
     }

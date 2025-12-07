@@ -19,11 +19,16 @@ public enum Rank {
         this.hierarchyLevel = hierarchyLevel;
     }
 
-    public char getSymbol() { return symbol; }
-    public int getHierarchyLevel() { return hierarchyLevel; }
+    public char getSymbol() {
+        return symbol;
+    }
+
+    public int getHierarchyLevel() {
+        return hierarchyLevel;
+    }
 
     public Rank getLowerRank() {
         int i = ordinal();
-        return (i < values().length - 1) ? values()[i + 1] : OMEGA;
+        return i < values().length - 1 ? values()[i + 1] : OMEGA;
     }
 }

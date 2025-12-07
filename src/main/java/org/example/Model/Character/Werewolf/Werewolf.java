@@ -1,10 +1,11 @@
 package org.example.Model.Character.Werewolf;
 
 import org.example.Model.Character.AbstractCharacter;
+import org.example.Model.Character.Interface.Combatant;
 import org.example.Model.Food.FoodItemType;
 import org.example.Model.Pack.Pack;
 
-public class Werewolf extends AbstractCharacter {
+public class Werewolf extends AbstractCharacter implements Combatant {
 
     private AgeCategory ageCategory = AgeCategory.ADULT;
     private boolean isHuman = false;
@@ -64,6 +65,22 @@ public class Werewolf extends AbstractCharacter {
 
     public void setImpetuosityFactor(double impetuosity) {
         this.impetuosity = impetuosity;
+    }
+
+    @Override
+    public void combat() {
+        if (isHuman) {
+            System.out.println(getName() + " cannot fight effectively in human form!");
+            return;
+        }
+
+        System.out.println(getName() + " fights with savage werewolf ferocity!");
+        setBelligerence(getBelligerence() + 20);
+
+        // Werewolves are naturally more aggressive in combat
+        if (calculateLevel() > 50) {
+            System.out.println("  → " + getName() + " unleashes devastating attacks!");
+        }
     }
 
 }

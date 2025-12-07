@@ -14,11 +14,9 @@ public class ReproductionManager {
     private static final int MAX_LITTER_SIZE = 7;
 
     private final HierarchyManager hierarchy;
-    private final AlphaManager alphaManager;
 
-    public ReproductionManager(HierarchyManager hierarchy, AlphaManager alphaManager) {
+    public ReproductionManager(HierarchyManager hierarchy) {
         this.hierarchy = hierarchy;
-        this.alphaManager = alphaManager;
     }
 
     public List<Werewolf> reproduce() {
