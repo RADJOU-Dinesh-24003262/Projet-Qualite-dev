@@ -1,4 +1,4 @@
-package Character.Gallic;
+package org.example.Model.Character.Gallic;
 
 import org.example.Model.Character.Gallic.*;
 import org.example.Model.Food.FoodItem;
