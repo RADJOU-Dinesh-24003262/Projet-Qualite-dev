@@ -1,5 +1,24 @@
 package org.example.Model.Food;
 
+/**
+ * Enumeration of specific food item types available in the game.
+ * <p>
+ * This enum defines all consumable items with their properties:
+ * name, food category type, nutritional score, and initial freshness state.
+ * </p>
+ * <p>
+ * Each food item type includes:
+ * </p>
+ * <ul>
+ *     <li>A descriptive name</li>
+ *     <li>A food type category (see {@link FoodType})</li>
+ *     <li>A nutritional score (higher values provide more health/satisfaction)</li>
+ *     <li>An initial freshness state (see {@link FreshnessState})</li>
+ * </ul>
+ * <p>
+ * Characters have different dietary preferences based on their origin (Gallic or Roman).
+ * </p>
+ */
 public enum FoodItemType {
 
     BOAR("Boar", FoodType.MEAT, 50, FreshnessState.NOT_APPLICABLE),

@@ -123,7 +123,7 @@ public final class ClanLeader {
             System.out.println("✅ Character '" + characterName + "' created successfully!");
             return newCharacter;
             
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException | IllegalArgumentException e) {
             System.out.println("❌ Failed to create character: " + e.getMessage());
             return null;
         }
@@ -158,7 +158,7 @@ public final class ClanLeader {
             System.out.println("✅ Character '" + characterName + "' created successfully!");
             return newCharacter;
             
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException | IllegalArgumentException e) {
             System.out.println("❌ Failed to create character: " + e.getMessage());
             return null;
         }
@@ -482,6 +482,8 @@ public final class ClanLeader {
     }
 
     public AbstractPlace getPlace() {
+        // Return the place directly as AbstractPlace is managed externally
+        // and defensive copying would break functionality
         return place;
     }
 

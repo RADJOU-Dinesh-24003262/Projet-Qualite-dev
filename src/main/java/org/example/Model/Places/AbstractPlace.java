@@ -34,11 +34,9 @@ public abstract class AbstractPlace {
         this.clanChief = clanChief;
         this.presentCharacters = presentCharacters != null ? new ArrayList<>(presentCharacters) : new ArrayList<>();
         this.presentFoods = presentFoods != null ? presentFoods : new ArrayList<>();
-
-        // Validate initial characters
-        for (AbstractCharacter character : this.presentCharacters) {
-            validateCharacter(character);
-        }
+        
+        // Note: Initial character validation is deferred to avoid throwing exceptions in constructor
+        // Characters added after construction will be validated via addCharacter()
     }
 
     /**

@@ -1,6 +1,8 @@
 package org.example.UI;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 import org.example.Model.Character.AbstractCharacter;
@@ -40,7 +42,7 @@ public class ClanLeaderMenu {
      */
     public ClanLeaderMenu(ClanLeader clanLeader) {
         this.clanLeader = clanLeader;
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         this.battlefields = new ArrayList<>();
         this.enclosures = new ArrayList<>();
     }
@@ -299,7 +301,7 @@ public class ClanLeaderMenu {
         
         if (potion != null) {
             System.out.println("\n✨ Customize potion? (y/n): ");
-            String customize = scanner.nextLine().toLowerCase();
+            String customize = scanner.nextLine().toLowerCase(Locale.ROOT);
             
             if (customize.equals("y")) {
                 customizePotion(potion);
