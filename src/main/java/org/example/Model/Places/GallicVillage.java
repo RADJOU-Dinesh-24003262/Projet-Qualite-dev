@@ -10,7 +10,7 @@ import org.example.Model.Food.FoodItem;
 /**
  * Represents a Gallic village that can only contain Gallic characters and fantasy creatures.
  */
-public class GallicVillage extends AbstractPlace {
+public final class GallicVillage extends AbstractPlace {
 
     /**
      * Creates a new Gallic village

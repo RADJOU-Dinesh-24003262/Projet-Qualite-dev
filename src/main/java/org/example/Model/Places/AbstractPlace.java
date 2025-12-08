@@ -9,7 +9,7 @@ import org.example.Model.Food.FoodItem;
  * Abstract base class representing a place that can contain characters and food items.
  * Each place has specific rules about which types of characters can be present.
  */
-public abstract class AbstractPlace {
+public abstract sealed class AbstractPlace permits Battlefield, Enclosure, GallicVillage, GalloRomanVillage, RomanCity, RomanFortifiedCamp {
     private TypePlace type;
     private String name;
     private int surface;
