@@ -4,14 +4,13 @@ import org.example.Model.Character.Gallic.Gallic;
 import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Gallic.Gallic;
-import org.example.Model.Character.Werewolf;
+import org.example.Model.Character.Werewolf.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**
  * Represents a Gallic village that can only contain Gallic characters and fantasy creatures.
  */
-public class GallicVillage extends AbstractPlace {
+public final class GallicVillage extends AbstractPlace {
 
     /**
      * Creates a new Gallic village

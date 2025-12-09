@@ -1,5 +1,20 @@
 package org.example.Model.Food;
 
+/**
+ * Represents an individual food item instance in the game.
+ * <p>
+ * A food item is a specific instance of a food type with a freshness state that can change over time.
+ * Characters can consume food items to satisfy hunger, gain health, or gain magical effects.
+ * </p>
+ * <p>
+ * Food items have the following characteristics:
+ * </p>
+ * <ul>
+ *     <li>Type - The specific type of food (defined in {@link FoodItemType})</li>
+ *     <li>Freshness - The current freshness state (defined in {@link FreshnessState})</li>
+ *     <li>Aging - Food can age over time, reducing its quality</li>
+ * </ul>
+ */
 public class FoodItem {
     private final FoodItemType type;
     private FreshnessState freshness;
@@ -47,4 +62,9 @@ public class FoodItem {
     public int getNutritionalScore() {
         return type.nutritionalScore;
     }
+
+    public String toString() {
+        return getName();
+    }
+
 }

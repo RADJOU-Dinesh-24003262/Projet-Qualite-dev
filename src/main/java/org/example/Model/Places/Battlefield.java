@@ -9,7 +9,7 @@ import org.example.Model.Food.FoodItem;
  * Represents a battlefield where all types of characters can be present.
  * This is the only place type without a clan chief, as it's a temporary combat zone.
  */
-public class Battlefield extends AbstractPlace {
+public final class Battlefield extends AbstractPlace {
 
     /**
      * Creates a new battlefield

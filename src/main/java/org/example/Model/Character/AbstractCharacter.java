@@ -8,9 +8,24 @@ import org.example.Model.Food.FoodItemType;
 import org.example.Model.Potion.Potion;
 import org.example.Model.Places.AbstractPlace;
 
+/**
+ * Abstract base class for all characters in the game.
+ * <p>
+ * This class defines the common attributes and behaviors for all character types
+ * (Gallic, Roman, Werewolf, etc.). Characters have physical attributes like health,
+ * strength, and stamina, and can perform actions like fighting, eating, and drinking potions.
+ * </p>
+ * <p>
+ * Subclasses must implement {@link #getFoodEdibleList()} to specify which food types
+ * the character can eat.
+ * </p>
+ */
 public abstract class AbstractCharacter {
 
-    protected enum Sex {
+    /**
+     * Enum representing the biological sex of a character.
+     */
+    public enum Sex {
         MALE, FEMALE
     }
 

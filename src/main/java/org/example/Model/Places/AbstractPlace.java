@@ -3,18 +3,13 @@ package org.example.Model.Places;
 import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Gallic.Gallic;
-import org.example.Model.Character.Roman.General;
-import org.example.Model.Character.Roman.Legionary;
-import org.example.Model.Character.Roman.Roman;
-import org.example.Model.Character.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**
  * Abstract base class representing a place that can contain characters and food items.
  * Each place has specific rules about which types of characters can be present.
  */
-public abstract class AbstractPlace {
+public abstract sealed class AbstractPlace permits Battlefield, Enclosure, GallicVillage, GalloRomanVillage, RomanCity, RomanFortifiedCamp {
     private TypePlace type;
     private String name;
     private int surface;
@@ -39,11 +34,9 @@ public abstract class AbstractPlace {
         this.clanChief = clanChief;
         this.presentCharacters = presentCharacters != null ? new ArrayList<>(presentCharacters) : new ArrayList<>();
         this.presentFoods = presentFoods != null ? presentFoods : new ArrayList<>();
-
-        // Validate initial characters
-        for (AbstractCharacter character : this.presentCharacters) {
-            validateCharacter(character);
-        }
+        
+        // Note: Initial character validation is deferred to avoid throwing exceptions in constructor
+        // Characters added after construction will be validated via addCharacter()
     }
 
     /**

@@ -5,16 +5,14 @@ import org.example.Model.Character.Roman.General;
 import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Roman.General;
-import org.example.Model.Character.Roman.Legionary;
-import org.example.Model.Character.Werewolf;
+import org.example.Model.Character.Werewolf.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**
  * Represents a Roman fortified camp that can only contain Roman combatants and fantasy creatures.
  * Only Legionaries, Generals, and Werewolves are allowed.
  */
-public class RomanFortifiedCamp extends AbstractPlace {
+public final class RomanFortifiedCamp extends AbstractPlace {
 
     /**
      * Creates a new Roman fortified camp

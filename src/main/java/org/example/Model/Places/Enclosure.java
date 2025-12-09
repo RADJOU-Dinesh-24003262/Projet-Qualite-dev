@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
 import org.example.Model.Food.FoodItem;
-import org.example.Model.Character.Werewolf;
+import org.example.Model.Character.Werewolf.Werewolf;
 
 /**
  * Represents an enclosure that can only contain fantasy creatures.
  * This is a special containment area exclusively for Werewolves.
  */
-public class Enclosure extends AbstractPlace {
+public final class Enclosure extends AbstractPlace {
 
     /**
      * Creates a new enclosure

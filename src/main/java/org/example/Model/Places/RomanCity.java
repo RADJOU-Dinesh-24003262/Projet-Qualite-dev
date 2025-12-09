@@ -4,14 +4,13 @@ import org.example.Model.Character.Roman.Roman;
 import java.util.ArrayList;
 
 import org.example.Model.Character.AbstractCharacter;
-import org.example.Model.Character.Roman.Roman;
-import org.example.Model.Character.Werewolf;
+import org.example.Model.Character.Werewolf.Werewolf;
 import org.example.Model.Food.FoodItem;
 
 /**
  * Represents a Roman city that can only contain Roman characters and fantasy creatures.
  */
-public class RomanCity extends AbstractPlace {
+public final class RomanCity extends AbstractPlace {
 
     /**
      * Creates a new Roman city

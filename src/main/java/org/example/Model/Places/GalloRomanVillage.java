@@ -11,7 +11,7 @@ import org.example.Model.Food.FoodItem;
  * Represents a Gallo-Roman village that can only contain Gallic and Roman characters.
  * This is a mixed settlement where both cultures coexist, but fantasy creatures are not allowed.
  */
-public class GalloRomanVillage extends AbstractPlace {
+public final class GalloRomanVillage extends AbstractPlace {
 
     /**
      * Creates a new Gallo-Roman village
