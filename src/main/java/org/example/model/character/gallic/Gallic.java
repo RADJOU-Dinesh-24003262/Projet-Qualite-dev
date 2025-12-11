@@ -13,11 +13,18 @@ import org.example.model.food.FoodItemType;
  */
 public class Gallic extends AbstractCharacter {
 
+    /**
+     * Default constructor for a Gallic character.
+     */
     public Gallic() {
+        super();
     }
 
     /**
-     * @return FoodItemType[] The list of food the chracter can eat
+     * Gets the list of food types that a Gallic character can eat.
+     * Gauls can eat boar, fish, and wine.
+     *
+     * @return An array of {@link FoodItemType} that the character can eat.
      */
     @Override
     protected FoodItemType[] getFoodEdibleList() {

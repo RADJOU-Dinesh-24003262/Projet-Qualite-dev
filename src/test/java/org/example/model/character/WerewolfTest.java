@@ -9,10 +9,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Unit tests for the {@link Werewolf} class, focusing on its omnivorous eating habits
+ * and special behaviors.
+ */
 class WerewolfTest {
 
     private Werewolf werewolf;
 
+    /**
+     * Sets up a new Werewolf instance before each test.
+     */
     @BeforeEach
     void setUp() {
         werewolf = new Werewolf();
@@ -22,34 +29,46 @@ class WerewolfTest {
         werewolf.setStamina(25);
     }
 
-    // ========== TESTS DE NOURRITURE OMNIVORE ==========
+    // ========== OMNIVORE FOOD TESTS ==========
 
+    /**
+     * Tests that a Werewolf can eat all types of food available in {@link FoodItemType}.
+     */
     @Test
-    @DisplayName("Werewolf peut manger TOUS les types de nourriture")
+    @DisplayName("Werewolf can eat ALL food types")
     void testCanEatAllFoodTypes() {
         for (FoodItemType type : FoodItemType.values()) {
             FoodItem food = new FoodItem(type);
             assertTrue(werewolf.canEat(food),
-                    "Werewolf devrait pouvoir manger " + type.getName());
+                    "Werewolf should be able to eat " + type.getName());
         }
     }
 
+    /**
+     * Tests that a Werewolf can eat boar.
+     */
     @Test
-    @DisplayName("Werewolf peut manger du sanglier")
+    @DisplayName("Werewolf can eat boar")
     void testCanEatBoar() {
         FoodItem boar = new FoodItem(FoodItemType.BOAR);
         assertTrue(werewolf.canEat(boar));
     }
 
+    /**
+     * Tests that a Werewolf can eat fish.
+     */
     @Test
-    @DisplayName("Werewolf peut manger du poisson")
+    @DisplayName("Werewolf can eat fish")
     void testCanEatFish() {
         FoodItem fish = new FoodItem(FoodItemType.FISH);
         assertTrue(werewolf.canEat(fish));
     }
 
+    /**
+     * Tests that a Werewolf can eat magical food items.
+     */
     @Test
-    @DisplayName("Werewolf peut manger des aliments magiques")
+    @DisplayName("Werewolf can eat magic food")
     void testCanEatMagicFood() {
         FoodItem idefix = new FoodItem(FoodItemType.IDEFIX_HAIR);
         FoodItem secret = new FoodItem(FoodItemType.SECRET_INGREDIENT);
@@ -58,15 +77,21 @@ class WerewolfTest {
         assertTrue(werewolf.canEat(secret));
     }
 
+    /**
+     * Tests that a Werewolf can drink two-headed unicorn milk.
+     */
     @Test
-    @DisplayName("Werewolf peut boire du lait de licorne bicéphale")
+    @DisplayName("Werewolf can drink two-headed unicorn milk")
     void testCanEatUnicornMilk() {
         FoodItem unicornMilk = new FoodItem(FoodItemType.UNICORN_MILK);
         assertTrue(werewolf.canEat(unicornMilk));
     }
 
+    /**
+     * Tests that a Werewolf can eat vegetables.
+     */
     @Test
-    @DisplayName("Werewolf peut manger des légumes")
+    @DisplayName("Werewolf can eat vegetables")
     void testCanEatVegetables() {
         FoodItem mistletoe = new FoodItem(FoodItemType.MISTLETOE);
         FoodItem carrots = new FoodItem(FoodItemType.CARROTS);
@@ -77,42 +102,25 @@ class WerewolfTest {
         assertTrue(werewolf.canEat(strawberries));
     }
 
+    /**
+     * Tests that a Werewolf can eat seafood.
+     */
     @Test
-    @DisplayName("Werewolf peut manger des fruits de mer")
+    @DisplayName("Werewolf can eat seafood")
     void testCanEatSeafood() {
         FoodItem lobster = new FoodItem(FoodItemType.LOBSTER);
         assertTrue(werewolf.canEat(lobster));
     }
 
-    // ========== TESTS DE LA LISTE D'ALIMENTS ==========
+    // ========== SPECIAL BEHAVIOR TESTS ==========
 
-//    @Test
-//    @DisplayName("Liste d'aliments Werewolf contient tous les FoodItemType")
-//    void testFoodListContainsAllTypes() {
-//        FoodItemType[] edibleList = werewolf.getFoodEdibleList();
-//        FoodItemType[] allTypes = FoodItemType.values();
-//
-//        assertEquals(allTypes.length, edibleList.length);
-//
-//        for (FoodItemType type : allTypes) {
-//            assertTrue(containsType(edibleList, type),
-//                "Liste devrait contenir " + type.getName());
-//        }
-//    }
-
-//    @Test
-//    @DisplayName("Werewolf est le seul à pouvoir tout manger")
-//    void testWerewolfUniqueOmnivore() {
-//        // Vérifie que getFoodEdibleList retourne bien FoodItemType.values()
-//        assertArrayEquals(FoodItemType.values(), werewolf.getFoodEdibleList());
-//    }
-
-    // ========== TESTS DE COMPORTEMENT SPÉCIAL ==========
-
+    /**
+     * Tests that a Werewolf can eat food items that neither Gallic nor Roman characters can eat.
+     */
     @Test
-    @DisplayName("Werewolf peut manger des aliments que ni Gallic ni Roman ne peuvent")
+    @DisplayName("Werewolf can eat food that neither Gallic nor Roman can")
     void testCanEatExclusiveFood() {
-        // Aliments que ni Gallic ni Roman ne peuvent manger
+        // Foods that neither Gallic nor Roman can eat
         FoodItem mistletoe = new FoodItem(FoodItemType.MISTLETOE);
         FoodItem lobster = new FoodItem(FoodItemType.LOBSTER);
         FoodItem rockOil = new FoodItem(FoodItemType.ROCK_OIL);
@@ -122,7 +130,12 @@ class WerewolfTest {
         assertTrue(werewolf.canEat(rockOil));
     }
 
-    // Méthode helper
+    /**
+     * Helper method to check if an array of {@link FoodItemType} contains a specific type.
+     * @param array The array to search.
+     * @param type The type to find.
+     * @return True if the type is found, false otherwise.
+     */
     private boolean containsType(FoodItemType[] array, FoodItemType type) {
         for (FoodItemType item : array) {
             if (item == type) return true;

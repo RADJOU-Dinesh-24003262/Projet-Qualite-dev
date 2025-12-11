@@ -12,8 +12,19 @@ import org.example.model.food.FoodItemType;
  * </p>
  */
 public class Roman extends AbstractCharacter {
+
     /**
-     * @return FoodItemType[] The list of food the chracter can eat
+     * Default constructor for a Roman character.
+     */
+    public Roman() {
+        super();
+    }
+
+    /**
+     * Gets the list of food types that a Roman character can eat.
+     * Romans can eat boar, honey, wine, and mead.
+     *
+     * @return An array of {@link FoodItemType} that the character can eat.
      */
     @Override
     protected FoodItemType[] getFoodEdibleList() {
