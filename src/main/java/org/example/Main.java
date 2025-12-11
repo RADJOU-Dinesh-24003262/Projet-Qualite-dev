@@ -1,7 +1,7 @@
 package org.example;
 
-import java.util.ArrayList;
-
+import org.example.model.places.RomanFortifiedCamp;
+import org.example.model.theaterInvasion.TheaterInvasion;
 import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
@@ -14,20 +14,35 @@ import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
 import org.example.model.places.GallicVillage;
-import org.example.model.places.RomanFortifiedCamp;
 import org.example.model.theaterInvasion.TheaterInvasion;
 
+import java.util.ArrayList;
+
 /**
- * Entry point for the Invasion Simulation.
- * Configures the world (Armorica), places, characters, and launches the temporal simulation.
+ * Main entry point for the "Theater Invasion" application.
+ * <p>
+ * This class initializes the entire game state, including:
+ * <ul>
+ * <li>Characters (Gauls, Romans, Werewolves)</li>
+ * <li>Places (Villages, Camps, Enclosures, Battlefields)</li>
+ * <li>Initial food supplies</li>
+ * <li>Clan Leaders</li>
+ * </ul>
+ * After initialization, it prompts the user to select the game mode
+ * (Turn-Based or Simulation) and launches the engine.
+ * </p>
  */
 public class Main {
+
+    /**
+     * The main method.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
-        // --- 1. Container Initialization ---
         ArrayList<AbstractPlace> places = new ArrayList<>();
         ArrayList<ClanLeader> leaders = new ArrayList<>();
 
-        // --- 2. Initial Food Creation ---
         ArrayList<FoodItem> villageFood = new ArrayList<>();
         villageFood.add(new FoodItem(FoodItemType.BOAR));
         villageFood.add(new FoodItem(FoodItemType.BOAR));
@@ -39,9 +54,6 @@ public class Main {
         campFood.add(new FoodItem(FoodItemType.MEAD));
         campFood.add(new FoodItem(FoodItemType.HONEY));
 
-        // --- 3. Character Creation ---
-
-        // Gauls
         Gallic asterix = new Gallic();
         asterix.setName("Asterix");
         asterix.setHealth(100);
@@ -55,7 +67,7 @@ public class Main {
         obelix.setStamina(100);
 
         Druid panoramix = new Druid();
-        panoramix.setName("Getafix"); // English name for Panoramix
+        panoramix.setName("Panoramix");
         panoramix.setHealth(80);
         panoramix.setStrength(10);
 
@@ -64,7 +76,6 @@ public class Main {
         gauls.add(obelix);
         gauls.add(panoramix);
 
-        // Romans
         Legionary brutus = new Legionary();
         brutus.setName("Brutus");
         brutus.setHealth(100);
@@ -94,15 +105,14 @@ public class Main {
 
         // Gallic Village
         GallicVillage village = new GallicVillage(
-                "Vitalstatistix",
-                "Village of the Indomitable",
+                "Abraracourcix",
+                "Village des Irréductibles",
                 500,
                 gauls,
                 villageFood
         );
         places.add(village);
 
-        // Roman Fortified Camp
         RomanFortifiedCamp camp = new RomanFortifiedCamp(
                 "Caius Bonus",
                 "Babaorum",
@@ -114,8 +124,8 @@ public class Main {
 
         // Enclosure (for werewolves)
         Enclosure enclosure = new Enclosure(
-                "The Keeper",
-                "Wolf Enclosure",
+                "Le Gardien",
+                "Enclos des Loups",
                 200,
                 werewolves,
                 new ArrayList<>()
@@ -152,7 +162,23 @@ public class Main {
 
         armorica.displayPlaces();
 
-        // Starts the main loop (Combats, Food, User Turn)
-        armorica.run();
+        System.out.println("\nChoose the game mode:");
+        System.out.println("1. 🔄 Turn-by-Turn Mode (Manual)");
+        System.out.println("2. ⏩ Simulation Mode (Automatic with Pause)");
+        System.out.print("Your choice: ");
+
+        int choice = -1;
+        try {
+            choice = Integer.parseInt(scanner.nextLine().trim());
+        } catch (NumberFormatException e) {
+            choice = 1; // Default to turn-by-turn mode if input fails
+        }
+
+        if (choice == 2) {
+            armorica.runSimulation();
+        } else {
+            armorica.runTurnBased();
+        }
+
     }
 }

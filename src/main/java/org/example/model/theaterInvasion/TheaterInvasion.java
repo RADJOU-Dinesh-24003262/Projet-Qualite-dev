@@ -11,6 +11,8 @@ import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
 import org.example.model.character.roman.Legionary;
+import org.example.model.character.roman.Roman;
+import org.example.model.character.werewolf.Werewolf;
 import org.example.model.clanLeader.ClanLeader;
 import org.example.model.food.FoodItem;
 import org.example.model.food.FoodItemType;
@@ -19,12 +21,18 @@ import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
 import org.example.model.potion.Potion;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
 /**
- * The {@code TheaterInvasion} class acts as the main engine (Controller) of the simulation.
+ * Manages the main logic of the "Theater Invasion" simulation.
  * <p>
- * It orchestrates the game flow, manages turns, automatic combats,
- * character lifecycles (hunger, potion effects), food spawning,
- * and user interactions via the console.
+ * This class acts as the game engine, controlling the flow of time,
+ * the management of places and characters, and the interaction modes
+ * (Turn-based vs. Real-time Simulation).
  * </p>
  */
 public class TheaterInvasion {
@@ -34,6 +42,26 @@ public class TheaterInvasion {
     private ArrayList<AbstractPlace> existantsPlaces;
     private ArrayList<ClanLeader> clanLeaders;
 
+    /**
+     * Flag to control the main loop of the simulation thread.
+     * Declared volatile to ensure visibility across threads.
+     */
+    private volatile boolean isSimulationRunning = true;
+
+    /**
+     * Flag to pause the logic execution within the simulation thread without stopping it.
+     * Declared volatile to ensure visibility across threads.
+     */
+    private volatile boolean isSimulationPaused = false;
+
+    /**
+     * Constructs a new TheaterInvasion instance.
+     *
+     * @param theaterName     The name of the war theater (e.g., "Armorica").
+     * @param maxPlaces       The maximum number of places allowed (if applicable).
+     * @param existantsPlaces The list of initialized places (Villages, Camps, etc.).
+     * @param clanLeaders     The list of Clan Leaders capable of performing actions.
+     */
     @SuppressWarnings("unused")
     public TheaterInvasion(String theaterName, int maxPlaces, ArrayList<AbstractPlace> existantsPlaces, ArrayList<ClanLeader> clanLeaders) {
         this.theaterName = theaterName;
@@ -42,15 +70,135 @@ public class TheaterInvasion {
         this.clanLeaders = new ArrayList<>(clanLeaders);
     }
 
-    // --- Utility method to secure user input ---
     /**
-     * Reads a full line and attempts to convert it to an integer.
-     * If the user enters text, returns -1 instead of crashing.
+     * Executes all automatic actions for a single game cycle.
+     * <p>
+     * This includes:
+     * <ul>
+     * <li>Handling random combats between characters in the same location.</li>
+     * <li>Updating character states (hunger, potion effects).</li>
+     * <li>Spawning new food items naturally.</li>
+     * <li>Aging and rotting existing food items.</li>
+     * </ul>
+     * </p>
+     *
+     * @param turn The current turn number (for display purposes).
+     */
+    private void runGameCycle(int turn) {
+        System.out.println("\n╔════════════════════════════════════╗");
+        System.out.println("║        NOUVEAU CYCLE (Tour " + turn + ")        ║");
+        System.out.println("╚════════════════════════════════════╝");
+
+        handleCombats();
+        updateCharactersState();
+        spawnFood();
+        rotFood();
+    }
+
+    /**
+     * Starts the game in <strong>Turn-Based Mode</strong>.
+     * <p>
+     * In this mode, the game waits for user input (Enter key) to advance to the next turn.
+     * The user is prompted to perform actions via Clan Leaders at the end of every automatic cycle.
+     * </p>
+     */
+    public void runTurnBased() {
+        Scanner scanner = new Scanner(System.in);
+        int turn = 0;
+
+        System.out.println(">> MODE TOUR PAR TOUR ACTIVÉ.");
+
+        while (true) {
+            turn++;
+            runGameCycle(turn); // Automatic logic
+            handleUserTurn(scanner); // Mandatory user interaction
+
+            System.out.println("... Fin du tour. Appuyez sur Entrée pour le tour suivant ...");
+            scanner.nextLine();
+        }
+    }
+
+    // --- MODE 2 : SIMULATION (Temps réel avec Pause) ---
+
+    /**
+     * Starts the game in <strong>Simulation Mode</strong>.
+     * <p>
+     * In this mode, a separate thread executes the game cycles automatically at a fixed interval.
+     * The main thread listens for user input to toggle the PAUSE state.
+     * When paused, the user can access the Clan Leader menu to perform actions.
+     * </p>
+     */
+    public void runSimulation() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println(">> MODE SIMULATION ACTIVÉ.");
+        System.out.println(">> Le jeu tourne tout seul. Appuyez sur [ENTRÉE] à tout moment pour mettre en PAUSE.");
+
+        // Launch a separate thread for game logic
+        Thread gameThread = new Thread(() -> {
+            int turn = 0;
+            while (isSimulationRunning) {
+                if (!isSimulationPaused) {
+                    turn++;
+                    runGameCycle(turn);
+
+                    try {
+                        // Simulation speed: 2 seconds per turn
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                } else {
+                    // While paused, the thread sleeps briefly to save CPU resources
+                    try { Thread.sleep(200); } catch (InterruptedException e) {}
+                }
+            }
+        });
+
+        gameThread.start();
+
+        // The Main Thread listens to the keyboard for the Pause command
+        while (isSimulationRunning) {
+            // Blocks here until the user presses Enter
+            scanner.nextLine();
+
+            // Trigger Pause
+            isSimulationPaused = true;
+
+            // Small delay to let the display thread finish its current print
+            try { Thread.sleep(100); } catch (InterruptedException e) {}
+
+            System.out.println("\n⏸️  SIMULATION EN PAUSE ⏸️");
+            System.out.println("1. 🛠️ Faire des modifications (Menu Chefs de Clan)");
+            System.out.println("2. ▶️ Reprendre la simulation");
+            System.out.println("0. 🚪 Quitter le jeu");
+            System.out.print("Choix : ");
+
+            int choice = safeReadInt(scanner);
+
+            if (choice == 1) {
+                handleUserTurn(scanner); // Access standard menu
+            } else if (choice == 0) {
+                System.out.println("Arrêt du jeu...");
+                isSimulationRunning = false;
+                System.exit(0);
+            }
+
+            System.out.println("▶️  Reprise de la simulation...");
+            isSimulationPaused = false;
+        }
+    }
+
+    /**
+     * Safely reads an integer from the scanner, handling non-integer inputs.
+     *
+     * @param scanner The input scanner.
+     * @return The parsed integer, or -1 if the input was invalid.
      */
     private int safeReadInt(Scanner scanner) {
         try {
-            String input = scanner.nextLine(); // Reads the whole line (clears the buffer)
-            return Integer.parseInt(input.trim()); // Tries to convert to int
+            String input = scanner.nextLine();
+            return Integer.parseInt(input.trim());
         } catch (NumberFormatException e) {
             // If it's not a number, return -1 (error code or invalid choice)
             System.out.println("❌ Invalid input. Please enter a number.");
@@ -58,6 +206,9 @@ public class TheaterInvasion {
         }
     }
 
+    /**
+     * Displays the characteristics of all places in the theater.
+     */
     public void displayPlaces() {
         System.out.println("--- Places in Theater " + theaterName + " ---");
         for (AbstractPlace place : existantsPlaces) {
@@ -74,12 +225,11 @@ public class TheaterInvasion {
     }
 
     /**
-     * Manages the logic for automatic combats.
+     * Handles random combat logic within each place.
      * <p>
-     * CORRECTION APPLIED: Explicit damage application added.
-     * If the `mutualFight` method was not sufficient to lower health, we force here
-     * a health loss (between 5 and 15) for both combatants to guarantee that
-     * combats have a real impact.
+     * Iterates through all places. If multiple characters are present,
+     * a fight may occur based on a probability (higher in Battlefields).
+     * Uses defensive copying to allow modification of character lists during iteration.
      * </p>
      */
     private void handleCombats() {
@@ -126,6 +276,14 @@ public class TheaterInvasion {
         }
     }
 
+    /**
+     * Processes the aftermath of a fight for a specific character.
+     * Handle death or fleeing (if on a battlefield).
+     *
+     * @param currentPlace  The place where the fight occurred.
+     * @param character     The character involved.
+     * @param isBattlefield True if the location is a designated battlefield.
+     */
     private void handlePostFight(AbstractPlace currentPlace, AbstractCharacter character, boolean isBattlefield) {
         if (!character.isAlive()) {
             System.out.println("💀 " + character.getName() + " has passed away.");
@@ -144,11 +302,15 @@ public class TheaterInvasion {
         }
     }
 
+    /**
+     * Updates biological states of characters (Hunger, Potion effects).
+     */
     private void updateCharactersState() {
         System.out.println(">> Time passes (Hunger increases, Potion fades)...");
+        Random rand = new Random();
         for (AbstractPlace place : existantsPlaces) {
             for (AbstractCharacter c : place.getPresentCharacters()) {
-                if (RANDOM.nextBoolean()) {
+                if (rand.nextBoolean()) {
                     c.setHunger(c.getHunger() + 5);
                 }
                 if (c.getLevelMagicPotion() > 0) {
@@ -159,8 +321,7 @@ public class TheaterInvasion {
     }
 
     /**
-     * Ages the food and removes expired food.
-     * Added an iterator to avoid errors when removing elements within a loop.
+     * Ages food items and removes rotten ones.
      */
     private void rotFood() {
         System.out.println(">> Food is aging...");
@@ -182,6 +343,9 @@ public class TheaterInvasion {
         }
     }
 
+    /**
+     * Randomly spawns new food items in non-battlefield locations.
+     */
     private void spawnFood() {
         System.out.println(">> Nature offers its gifts...");
         FoodItemType[] allowedTypes = FoodItemType.values();
@@ -196,6 +360,12 @@ public class TheaterInvasion {
         }
     }
 
+    /**
+     * Displays the menu for Clan Leaders to perform actions.
+     * Used in both Turn-Based mode (every turn) and Simulation mode (on pause).
+     *
+     * @param scanner The input scanner.
+     */
     private void handleUserTurn(Scanner scanner) {
         if (clanLeaders.isEmpty()) return;
 
@@ -217,6 +387,12 @@ public class TheaterInvasion {
         }
     }
 
+    /**
+     * Sub-menu for a specific Clan Leader's actions.
+     *
+     * @param leader  The selected leader.
+     * @param scanner The input scanner.
+     */
     private void menuLeaderAction(ClanLeader leader, Scanner scanner) {
         boolean acting = true;
         while (acting) {
@@ -269,17 +445,6 @@ public class TheaterInvasion {
         }
     }
 
-    /**
-     * Corrected subroutine to feed characters.
-     * <p>
-     * Strictly checks if food is available.
-     * If the list is empty, displays the message "No food available currently in the camp".
-     * If food is present, feeds the characters, then removes the food item
-     * from the list to avoid reusing it in the next turn.
-     * </p>
-     *
-     * @param leader The clan leader ordering the meal.
-     */
     private void performFeedCharacters(ClanLeader leader) {
         AbstractPlace place = leader.getPlace();
         List<FoodItem> foods = place.getPresentFoods();
@@ -393,7 +558,7 @@ public class TheaterInvasion {
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+        Scanner scanner = new Scanner(System.in);
         int turn = 0;
 
         while (true) {
