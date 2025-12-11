@@ -1,8 +1,8 @@
 package org.example.model.pack;
 
-import org.example.model.character.werewolf.Werewolf;
-
 import java.util.List;
+
+import org.example.model.character.werewolf.Werewolf;
 
 public class PackDisplay {
 
@@ -20,7 +20,7 @@ public class PackDisplay {
         System.out.println("╚══════════════════════════════════════╝");
 
         System.out.println("🏷 Pack Name : " + packName);
-        System.out.println("🐺 Members   : " + hierarchy.getMembers().size());
+        System.out.println("🐺 Members   : " + hierarchy.getMemberCount());
 
         System.out.println("♂ Alpha Male   : " + alphaManager.getAlphaMale().getName()
                 + " (Strength: " + alphaManager.getAlphaMale().getStrength() + ")");
@@ -29,11 +29,12 @@ public class PackDisplay {
                 + " (Strength: " + alphaManager.getAlphaFemale().getStrength() + ")");
 
         System.out.println("\n----- Hierarchy Distribution -----");
-        hierarchy.getHierarchy().forEach((rank, list) -> {
+        for (Rank rank : Rank.values()) {
+            List<Werewolf> list = hierarchy.getWerewolvesByRank(rank);
             if (!list.isEmpty()) {
                 System.out.println(rank.getSymbol() + " (" + rank.name() + ") : " + list.size() + " members");
             }
-        });
+        }
 
         System.out.println("══════════════════════════════════════════\n");
     }
@@ -45,7 +46,7 @@ public class PackDisplay {
         System.out.println("╚══════════════════════════════════════╝");
 
         for (Rank rank : Rank.values()) {
-            List<Werewolf> list = hierarchy.getHierarchy().get(rank);
+            List<Werewolf> list = hierarchy.getWerewolvesByRank(rank);
 
             if (!list.isEmpty()) {
                 System.out.println("\n--- Rank " + rank.getSymbol() + " (" + rank.name() + ") ---");

@@ -1,10 +1,12 @@
 package org.example.model.pack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
+
 import org.example.model.character.AbstractCharacter;
-import org.example.model.character.werewolf.Werewolf;
 import org.example.model.character.werewolf.AgeCategory;
+import org.example.model.character.werewolf.Werewolf;
 
 /**
  * The {@code RankAssigner} class is responsible for assigning ranks within a werewolf pack hierarchy.
@@ -35,11 +37,8 @@ public class RankAssigner {
      */
     public void createHierarchy(List<Werewolf> werewolves, Werewolf alphaMale, Werewolf alphaFemale) {
         // Clears all members except the alphas
-        hierarchy.getHierarchy().forEach((rank, list) -> {
-            if (rank != Rank.ALPHA) list.clear();
-        });
-
-        hierarchy.getMembers().removeIf(w -> w != alphaMale && w != alphaFemale);
+        hierarchy.clearNonAlphaRanks();
+        hierarchy.retainOnlyAlphas(alphaMale, alphaFemale);
 
         // Filter adult males and females, and sort them by level
         List<Werewolf> adultMales = filterAdults(werewolves, AbstractCharacter.Sex.MALE, alphaMale);

@@ -1,13 +1,28 @@
 package org.example.model.character.werewolf;
 
+/**
+ * A helper class responsible for displaying the characteristics of a {@link Werewolf}.
+ * This class formats and prints the werewolf's attributes to the console in a readable way.
+ */
 public class WerewolfDisplay {
 
+    /**
+     * The werewolf instance whose characteristics will be displayed.
+     */
     private final Werewolf w;
 
+    /**
+     * Constructs a display manager for a specific werewolf.
+     * @param w The werewolf to be displayed.
+     */
     public WerewolfDisplay(Werewolf w) {
         this.w = w;
     }
 
+    /**
+     * Prints the formatted characteristics of the werewolf to the standard output.
+     * Includes details such as name, stats, rank, pack, and current form.
+     */
     public void show() {
         System.out.println("╔════════════════════════════════════╗");
         System.out.println("║        Werewolf Characteristics     ║");

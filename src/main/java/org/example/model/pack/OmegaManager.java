@@ -1,9 +1,10 @@
 package org.example.model.pack;
 
-import org.example.model.character.werewolf.Werewolf;
-import org.example.model.character.werewolf.AgeCategory;
-
+import java.util.ArrayList;
 import java.util.List;
+
+import org.example.model.character.werewolf.AgeCategory;
+import org.example.model.character.werewolf.Werewolf;
 
 public class OmegaManager {
 
@@ -33,7 +34,9 @@ public class OmegaManager {
             if (rank == Rank.ALPHA || rank == Rank.OMEGA)
                 continue;
 
-            for (Werewolf w : List.copyOf(hierarchy.getHierarchy().get(rank))) {
+            // Create a copy to avoid concurrent modification
+            List<Werewolf> rankMembers = new ArrayList<>(hierarchy.getWerewolvesByRank(rank));
+            for (Werewolf w : rankMembers) {
                 if (w.getAgeCategory() == AgeCategory.ADULT &&
                     w.getStrength() < threshold) {
 
