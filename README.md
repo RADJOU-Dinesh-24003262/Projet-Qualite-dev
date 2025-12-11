@@ -187,7 +187,7 @@ Des boutons spécifiques apparaissent pour gérer la biologie de la meute :
 Projet réalisé par un trinôme d'étudiants de l'IUT d'Aix-Marseille :
 
   * **Dinesh RADJOU**
-  * **Amir**
+  * **Amir TAHA CHAOUI**
   * **Matis ROMBI**
 
 -----
