@@ -90,8 +90,10 @@ public abstract sealed class AbstractPlace permits Battlefield, Enclosure, Galli
      * @param character The character to remove
      */
     public void deleteCharacter(AbstractCharacter character) {
-        presentCharacters.remove(character);
-        presentCharacters.remove(character);
+        boolean removed = presentCharacters.remove(character);
+        if (!removed) {
+            System.out.println("⚠️ Warning: Character " + (character != null ? character.getName() : "null") + " was not found in place " + this.getName() + " and could not be removed.");
+        }
     }
 
     /**

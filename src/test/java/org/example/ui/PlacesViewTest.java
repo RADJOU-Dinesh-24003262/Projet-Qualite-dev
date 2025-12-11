@@ -27,9 +27,7 @@ public class PlacesViewTest {
     void testRefreshPlaces() throws InterruptedException {
         // Arrange : Créer des données de test
         GallicVillage village = new GallicVillage("Test Village", "Village", 100, new ArrayList<>(), new ArrayList<>());
-        Gallic asterix = new Gallic();
-        asterix.setName("Asterix");
-        asterix.setHealth(100);
+        Gallic asterix = new Gallic("Asterix", 35, 50, 100);
         village.addCharacter(asterix);
 
         List<AbstractPlace> places = new ArrayList<>();
@@ -39,7 +37,7 @@ public class PlacesViewTest {
 
         Platform.runLater(() -> {
             // Act
-            PlacesView view = new PlacesView();
+            PlacesView view = new PlacesView(new GameSelectionModel());
             view.refresh(places);
 
             // Assert

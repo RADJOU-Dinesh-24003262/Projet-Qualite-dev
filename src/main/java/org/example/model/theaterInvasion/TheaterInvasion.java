@@ -284,10 +284,63 @@ public class TheaterInvasion {
                         // Gestion des conséquences (mort ou fuite)
                         handlePostFight(place, c1, true); // true car on est forcément sur un Battlefield
                         handlePostFight(place, c2, true);
+
+                        // Check for a winner after the fight
+                        checkForWinner(place);
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Checks if a battle has a single survivor and rewards them.
+     * @param place The place to check (should be a Battlefield).
+     */
+    private void checkForWinner(AbstractPlace place) {
+        if (!(place instanceof Battlefield)) {
+            return;
+        }
+
+        List<AbstractCharacter> survivors = place.getPresentCharacters();
+        if (survivors.size() == 1) {
+            AbstractCharacter winner = survivors.get(0);
+            if (winner.isAlive()) {
+                System.out.println("🏆 " + winner.getName() + " is the sole survivor of the battle! They are victorious!");
+                
+                // Reward the winner
+                winner.setHealth(200); // Full heal
+                winner.setStrength(winner.getStrength() + 20);
+                System.out.println("   (Strength +20, Fully Healed)");
+
+                // Automatically return the winner to their home base
+                ClanLeader ownerLeader = findLeaderForCharacter(winner);
+                if (ownerLeader != null) {
+                    ownerLeader.returnCharacter(winner, place);
+                } else {
+                    // If no leader, they just leave the battlefield
+                    place.deleteCharacter(winner);
+                    System.out.println("   " + winner.getName() + " leaves the battlefield.");
+                }
+            }
+        }
+    }
+
+    /**
+     * Finds the ClanLeader responsible for a given character based on their origin place.
+     * @param character The character to find the leader for.
+     * @return The corresponding ClanLeader, or null if not found.
+     */
+    private ClanLeader findLeaderForCharacter(AbstractCharacter character) {
+        if (character.getOriginPlace() == null) {
+            return null;
+        }
+        for (ClanLeader leader : this.clanLeaders) {
+            if (leader.getPlace().equals(character.getOriginPlace())) {
+                return leader;
+            }
+        }
+        return null;
     }
 
     /**
@@ -302,7 +355,7 @@ public class TheaterInvasion {
         if (!character.isAlive()) {
             System.out.println("💀 " + character.getName() + " has passed away.");
             currentPlace.deleteCharacter(character);
-        } else if (isBattlefield) {
+        } else if (isBattlefield && character.getHealth() < 30) { // Flee if health is low
             AbstractPlace origin = character.getOriginPlace();
             if (origin != null && origin != currentPlace) {
                 System.out.println("🏃 " + character.getName() + " flees back to " + origin.getName());

@@ -1,6 +1,7 @@
 package org.example.model.pack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -13,6 +14,10 @@ public class ReproductionManager {
     private static final int MIN_LITTER_SIZE = 1;
     private static final int MAX_LITTER_SIZE = 7;
     private static final Random RANDOM = new Random();
+    private static final List<String> CUB_NAMES = Arrays.asList(
+            "Lupa", "Fenris", "Skoll", "Hati", "Geri", "Freki", "Amarok", "Raksha", "Akela",
+            "Timber", "Shadow", "Ghost", "Nyx", "Luna", "Sol"
+    );
 
     private final HierarchyManager hierarchy;
 
@@ -33,8 +38,8 @@ public class ReproductionManager {
                 : Rank.GAMMA;
 
         for (int i = 0; i < litterSize; i++) {
-
-            Werewolf cub = new Werewolf("Cub-" + System.currentTimeMillis() + "-" + i);
+            String name = CUB_NAMES.get(RANDOM.nextInt(CUB_NAMES.size()));
+            Werewolf cub = new Werewolf(name + " (Cub)");
 
             // Assign random characteristics
             cub.setAge(0);

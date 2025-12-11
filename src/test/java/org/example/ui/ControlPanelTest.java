@@ -46,6 +46,7 @@ public class ControlPanelTest {
         Platform.runLater(() -> {
             ControlPanel panel = new ControlPanel(
                     dummyGame,
+                    new GameSelectionModel(),
                     () -> {}, // Dummy refresh callback
                     () -> {}, // Dummy next turn callback
                     (b) -> {} // Dummy auto mode callback
@@ -71,6 +72,7 @@ public class ControlPanelTest {
         Platform.runLater(() -> {
             ControlPanel panel = new ControlPanel(
                     dummyGame,
+                    new GameSelectionModel(),
                     () -> {},
                     () -> callCount.incrementAndGet(), // Increment counter on click
                     (b) -> {}
@@ -98,6 +100,7 @@ public class ControlPanelTest {
         Platform.runLater(() -> {
             ControlPanel panel = new ControlPanel(
                     dummyGame,
+                    new GameSelectionModel(),
                     () -> {},
                     () -> {},
                     (enabled) -> isAutoMode.set(enabled) // Update boolean on toggle

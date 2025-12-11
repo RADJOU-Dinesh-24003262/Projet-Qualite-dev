@@ -135,6 +135,11 @@ public abstract class AbstractCharacter {
      * @param other The character to heal.
      */
     public void heal(AbstractCharacter other) {
+        System.out.println("DEBUG: Attempting to heal " + other.getName() + ". Current isAlive: " + other.isAlive());
+        if (!other.isAlive()) {
+            System.out.println("DEBUG: " + other.getName() + " is dead. Cannot heal.");
+            return;
+        }
         // TODO: Implement a more complex healing logic.
         other.setHealth(other.getHealth() + this.strength);
     }
@@ -165,6 +170,9 @@ public abstract class AbstractCharacter {
      * @param food The food item to eat.
      */
     public void eatFood(FoodItem food) {
+        if (!isAlive()) {
+            return;
+        }
         if (!canEat(food) || food.freshnessApplicable() && !food.isFresh()) {
             this.setHealth(getHealth() - 10);
         } else {
@@ -177,17 +185,26 @@ public abstract class AbstractCharacter {
      * @param potion The potion to drink.
      */
     public void drinkPotion(Potion potion) {
+        if (!isAlive()) {
+            return;
+        }
         this.setLevelMagicPotion(getLevelMagicPotion() + potion.getMagicBoost());
     }
 
     /**
      * The character dies, resetting their stats and marking them as not alive.
+     * This method is now idempotent.
      */
     public void die() {
-        this.setHealth(0);
+        if (!isAlive) {
+            return; // Already dead
+        }
+        System.out.println("DEBUG: " + this.getName() + " is dying.");
+        this.isAlive = false;
+        this.health = 0; // Set field directly to avoid recursion
         this.setStrength(0);
         this.setStamina(0);
-        this.isAlive = false;
+        System.out.println("DEBUG: " + this.getName() + " is now dead. isAlive: " + this.isAlive);
     }
 
     /**
@@ -295,11 +312,18 @@ public abstract class AbstractCharacter {
     }
 
     /**
-     * Sets the character's health, ensuring it does not drop below zero.
-     * @param health The new health value.
+     * Sets the character's health. If health drops to 0 or below, the character dies.
+     * Ensures health does not drop below zero.
+     * @param newHealth The new health value.
      */
-    public void setHealth(int health) {
-        this.health = Math.max(0, health);
+    public void setHealth(int newHealth) {
+        System.out.println("DEBUG: setHealth for " + this.getName() + ". Current health: " + this.health + ", requested new health: " + newHealth + ", isAlive: " + this.isAlive);
+        this.health = Math.max(0, newHealth);
+        if (this.isAlive && this.health == 0) {
+            System.out.println("DEBUG: Health is 0, calling die() for " + this.getName());
+            die();
+        }
+        System.out.println("DEBUG: setHealth for " + this.getName() + " finished. New health: " + this.health + ", isAlive: " + this.isAlive);
     }
 
     /**

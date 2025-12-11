@@ -1,6 +1,7 @@
 package org.example.ui;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.example.model.character.AbstractCharacter;
@@ -34,6 +35,7 @@ public class ControlPanel {
     private final VBox panel;
     private final TheaterInvasion game;
     private final Runnable refreshCallback;
+    private final GameSelectionModel selectionModel;
 
     // Controls
     private Button btnNextTurn;
@@ -41,17 +43,26 @@ public class ControlPanel {
     private ComboBox<ClanLeader> leaderSelector;
     private VBox actionPanel;
     private Button btnClearLog;
+    private Button btnReturn;
+    private Button btnHeal;
+    private Button btnFeed;
+    private Button btnAskPotion;
+    private Button btnGivePotion;
+    private Button btnTransfer;
+
 
     /**
      * Constructs the Control Panel.
      *
      * @param game              The game instance.
+     * @param selectionModel    The model for UI selection.
      * @param refreshCallback   Runnable to update the UI.
      * @param nextTurnCallback  Runnable to execute a turn.
      * @param autoModeCallback  Consumer to toggle auto-simulation.
      */
-    public ControlPanel(TheaterInvasion game, Runnable refreshCallback, Runnable nextTurnCallback, java.util.function.Consumer<Boolean> autoModeCallback) {
+    public ControlPanel(TheaterInvasion game, GameSelectionModel selectionModel, Runnable refreshCallback, Runnable nextTurnCallback, java.util.function.Consumer<Boolean> autoModeCallback) {
         this.game = game;
+        this.selectionModel = selectionModel;
         this.refreshCallback = refreshCallback;
 
         this.panel = new VBox(15);
@@ -81,7 +92,6 @@ public class ControlPanel {
         leaderSelector.setPromptText("Select a Leader...");
         leaderSelector.setStyle("-fx-font-size: 13px; -fx-background-color: #ecf0f1;");
 
-        // Ensure TheaterInvasion has getClanLeaders() public!
         try {
             leaderSelector.getItems().addAll(game.getClanLeaders());
         } catch (Exception e) {
@@ -99,10 +109,28 @@ public class ControlPanel {
         leaderSelector.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             actionPanel.setDisable(newVal == null);
         });
+        
+        selectionModel.selectedCharacterProperty().addListener((obs, oldChar, newChar) -> {
+            updateContextualButtons();
+        });
 
         btnClearLog = UIStyles.createStyledButton("🗑️ Clear Log", "#95a5a6");
 
         panel.getChildren().addAll(lblTime, btnNextTurn, btnAuto, new Separator(), lblActions, leaderSelector, actionPanel, new Separator(), btnClearLog);
+    }
+    
+    private void updateContextualButtons() {
+        AbstractCharacter selectedChar = selectionModel.getSelectedCharacter();
+        boolean canReturn = false;
+        if (selectedChar != null) {
+            for (AbstractPlace place : game.getExistantsPlaces()) {
+                if (place instanceof Battlefield && place.getPresentCharacters().contains(selectedChar)) {
+                    canReturn = true;
+                    break;
+                }
+            }
+        }
+        btnReturn.setDisable(!canReturn);
     }
 
     public VBox getView() { return panel; }
@@ -130,13 +158,18 @@ public class ControlPanel {
         btnNextTurn.setDisable(disabled);
         leaderSelector.setDisable(disabled);
         actionPanel.setDisable(disabled || leaderSelector.getValue() == null);
+        if (disabled) {
+            btnReturn.setDisable(true);
+        } else {
+            updateContextualButtons();
+        }
     }
 
     private void setupActionButtons() {
         Button btnCreateChar = UIStyles.createStyledButton("➕ Recruit", "#e67e22");
         btnCreateChar.setOnAction(e -> handleRecruit());
 
-        Button btnHeal = UIStyles.createStyledButton("💚 Heal", "#16a085");
+        btnHeal = UIStyles.createStyledButton("💚 Heal", "#16a085");
         btnHeal.setOnAction(e -> {
             if (getSelectedLeader() != null) {
                 getSelectedLeader().healAllCharacters();
@@ -145,19 +178,23 @@ public class ControlPanel {
             }
         });
 
-        Button btnFeed = UIStyles.createStyledButton("🍖 Banquet", "#d35400");
+        btnFeed = UIStyles.createStyledButton("🍖 Banquet", "#d35400");
         btnFeed.setOnAction(e -> handleFeed());
 
-        Button btnAskPotion = UIStyles.createStyledButton("🧪 Ask Potion", "#8e44ad");
+        btnAskPotion = UIStyles.createStyledButton("🧪 Ask Potion", "#8e44ad");
         btnAskPotion.setOnAction(e -> handleAskPotion());
 
-        Button btnGivePotion = UIStyles.createStyledButton("🍺 Give Potion", "#9b59b6");
+        btnGivePotion = UIStyles.createStyledButton("🍺 Give Potion", "#9b59b6");
         btnGivePotion.setOnAction(e -> handleGivePotion());
 
-        Button btnTransfer = UIStyles.createStyledButton("🚚 Transfer", "#34495e");
+        btnTransfer = UIStyles.createStyledButton("🚚 Transfer", "#34495e");
         btnTransfer.setOnAction(e -> handleTransfer());
 
-        actionPanel.getChildren().addAll(btnCreateChar, new Separator(), btnHeal, btnFeed, new Separator(), btnAskPotion, btnGivePotion, new Separator(), btnTransfer);
+        btnReturn = UIStyles.createStyledButton("↩️ Return Home", "#7f8c8d");
+        btnReturn.setDisable(true); // Disabled by default
+        btnReturn.setOnAction(e -> handleReturnCharacter());
+
+        actionPanel.getChildren().addAll(btnCreateChar, new Separator(), btnHeal, btnFeed, new Separator(), btnAskPotion, btnGivePotion, new Separator(), btnTransfer, btnReturn);
 
         Label lblColony = new Label("🐺 GESTION COLONIE");
         lblColony.setStyle("-fx-font-weight: bold; -fx-text-fill: #7f8c8d; -fx-font-size: 11px; -fx-padding: 10 0 0 0;");
@@ -165,7 +202,6 @@ public class ControlPanel {
         Button btnColonyStats = UIStyles.createStyledButton("📊 Stats Meute", "#8e44ad");
         btnColonyStats.setOnAction(e -> {
             if (game.getColony() != null) {
-                // Affiche les détails dans la console (redirigée vers le GameLogger)
                 game.getColony().displayColonyStats();
                 game.getColony().displayAllWerewolves();
             } else {
@@ -177,9 +213,8 @@ public class ControlPanel {
         btnForceReproduction.setOnAction(e -> {
             if (game.getColony() != null && !game.getColony().getPacks().isEmpty()) {
                 System.out.println("💕 Déclenchement manuel de la saison des amours...");
-                // On force la reproduction sur la première meute pour l'exemple
                 game.getColony().getPacks().get(0).reproduce();
-                refreshCallback.run(); // Met à jour l'interface graphique (nouveaux louveteaux)
+                refreshCallback.run();
             }
         });
 
@@ -187,17 +222,11 @@ public class ControlPanel {
         btnHowl.setOnAction(e -> {
             if (game.getColony() != null) {
                 System.out.println("📢 Un hurlement résonne dans la colonie...");
-                // Déclenche des hurlements aléatoires
-                // Note: Cette méthode est privée dans Colony, idéalement il faudrait une méthode publique 'triggerRandomEvent'
-                // Pour l'instant, on simule en avançant le temps ou en appelant une méthode spécifique si vous l'ajoutez.
-                // Ici, on va simplement afficher l'état pour confirmer l'action.
                 game.getColony().displayAllWerewolves();
             }
         });
 
-        // Ajout des nouveaux boutons au panneau
         actionPanel.getChildren().addAll(
-                // ... boutons existants ...
                 new Separator(),
                 lblColony,
                 btnColonyStats,
@@ -214,19 +243,57 @@ public class ControlPanel {
         List<String> choices = List.of("Gaulois", "Romain", "Loup-Garou");
         UIStyles.showCustomChoiceDialog("Recruitment", "Reinforcements for " + leader.getName(), "Class :", choices, null)
                 .ifPresent(type -> {
-                    TextInputDialog nameDialog = new TextInputDialog();
-                    nameDialog.setTitle("Identity");
-                    nameDialog.setHeaderText("Name :");
-                    nameDialog.showAndWait().ifPresent(name -> {
-                        switch (type) {
-                            case "Gaulois" -> leader.createGallicCharacter(name, Gallic.class);
-                            case "Romain" -> leader.createRomanCharacter(name, Legionary.class);
-                            case "Loup-Garou" -> leader.createWerewolf(name);
-                        }
-                        System.out.println("✅ Recruit: " + name + " (" + type + ")");
-                        refreshCallback.run();
-                    });
+                    if ("Gaulois".equals(type)) {
+                        List<String> gallicTypes = List.of("Gallic", "Druid", "Blacksmith", "Innkeeper", "Merchant");
+                        UIStyles.showCustomChoiceDialog("Gallic Type", "Choose the type of Gallic character", "Type :", gallicTypes, null)
+                                .ifPresent(gallicType -> {
+                                    TextInputDialog nameDialog = new TextInputDialog();
+                                    nameDialog.setTitle("Identity");
+                                    nameDialog.setHeaderText("Name :");
+                                    nameDialog.showAndWait().ifPresent(name -> {
+                                        switch (gallicType) {
+                                            case "Druid" -> leader.createGallicCharacter(name, Druid.class);
+                                            case "Blacksmith" -> leader.createGallicCharacter(name, org.example.model.character.gallic.Blacksmith.class);
+                                            case "Innkeeper" -> leader.createGallicCharacter(name, org.example.model.character.gallic.Innkeeper.class);
+                                            case "Merchant" -> leader.createGallicCharacter(name, org.example.model.character.gallic.Merchant.class);
+                                            default -> leader.createGallicCharacter(name, Gallic.class);
+                                        }
+                                        System.out.println("✅ Recruit: " + name + " (" + gallicType + ")");
+                                        refreshCallback.run();
+                                    });
+                                });
+                    } else {
+                        TextInputDialog nameDialog = new TextInputDialog();
+                        nameDialog.setTitle("Identity");
+                        nameDialog.setHeaderText("Name :");
+                        nameDialog.showAndWait().ifPresent(name -> {
+                            switch (type) {
+                                case "Romain" -> leader.createRomanCharacter(name, Legionary.class);
+                                case "Loup-Garou" -> leader.createWerewolf(name);
+                            }
+                            System.out.println("✅ Recruit: " + name + " (" + type + ")");
+                            refreshCallback.run();
+                        });
+                    }
                 });
+    }
+    
+    private void handleReturnCharacter() {
+        ClanLeader leader = getSelectedLeader();
+        AbstractCharacter character = selectionModel.getSelectedCharacter();
+        if (leader == null || character == null) return;
+
+        Optional<AbstractPlace> sourcePlaceOpt = game.getExistantsPlaces().stream()
+                .filter(p -> p.getPresentCharacters().contains(character))
+                .findFirst();
+
+        if (sourcePlaceOpt.isPresent()) {
+            leader.returnCharacter(character, sourcePlaceOpt.get());
+            selectionModel.clearSelection();
+            refreshCallback.run();
+        } else {
+            System.out.println("❌ Could not find the source place for " + character.getName());
+        }
     }
 
     private void handleFeed() {

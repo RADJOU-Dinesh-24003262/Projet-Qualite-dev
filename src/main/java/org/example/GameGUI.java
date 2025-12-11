@@ -17,6 +17,7 @@ import javafx.util.Duration;
 import org.example.model.theaterInvasion.TheaterInvasion;
 import org.example.ui.ControlPanel;
 import org.example.ui.GameLogger;
+import org.example.ui.GameSelectionModel;
 import org.example.ui.PlacesView;
 import org.example.utils.GameInitializer;
 
@@ -36,6 +37,7 @@ public class GameGUI extends Application {
     private PlacesView placesView;
     private ControlPanel controlPanel;
     private Label turnLabel;
+    private GameSelectionModel selectionModel;
 
     public static void main(String[] args) {
         launch(args);
@@ -45,14 +47,16 @@ public class GameGUI extends Application {
     public void start(Stage primaryStage) {
         // 1. Initialize Game Data
         this.game = GameInitializer.initialize();
+        this.selectionModel = new GameSelectionModel();
 
         // 2. Initialize UI Components
         this.gameLogger = new GameLogger();
-        this.placesView = new PlacesView();
+        this.placesView = new PlacesView(selectionModel);
 
         // Link the Control Panel to the Game logic via callbacks
         this.controlPanel = new ControlPanel(
                 this.game,
+                this.selectionModel,
                 this::refreshUI,          // Callback to update UI
                 this::executeTurn,        // Callback to run next turn
                 this::toggleAutoMode      // Callback to switch auto mode

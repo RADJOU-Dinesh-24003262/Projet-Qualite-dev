@@ -134,6 +134,7 @@ public final class ClanLeader {
 
             newCharacter.setStamina(15);
             newCharacter.setHunger(50);
+            newCharacter.setOriginPlace(this.place); // Set the origin place
 
             place.addCharacter(newCharacter);
             System.out.println("✅ Character '" + characterName + "' created successfully!");
@@ -175,6 +176,7 @@ public final class ClanLeader {
 
             newCharacter.setStamina(20);
             newCharacter.setHunger(50);
+            newCharacter.setOriginPlace(this.place); // Set the origin place
 
             place.addCharacter(newCharacter);
             System.out.println("✅ Character '" + characterName + "' created successfully!");
@@ -203,6 +205,7 @@ public final class ClanLeader {
             Werewolf newWerewolf = new Werewolf(characterName, 100, 40, 150);
             newWerewolf.setStamina(30);
             newWerewolf.setHunger(80);
+            newWerewolf.setOriginPlace(this.place); // Set the origin place
 
             place.addCharacter(newWerewolf);
             System.out.println("✅ Werewolf '" + characterName + "' created successfully!");
@@ -459,6 +462,43 @@ public final class ClanLeader {
             System.out.println("❌ Transfer failed: " + e.getMessage());
             // Re-add character to original place if transfer failed
             place.addCharacter(character);
+        }
+    }
+
+    /**
+     * Returns a character from a source place back to the leader's home place.
+     *
+     * @param character The character to return.
+     * @param sourcePlace The place the character is currently in.
+     */
+    public void returnCharacter(AbstractCharacter character, AbstractPlace sourcePlace) {
+        System.out.println("DEBUG: returnCharacter called for " + (character != null ? character.getName() : "null") +
+                           " from " + (sourcePlace != null ? sourcePlace.getName() : "null") +
+                           " to leader's place " + (this.place != null ? this.place.getName() : "null"));
+        if (character == null || sourcePlace == null) {
+            System.out.println("DEBUG: returnCharacter - Character or source place is null. Aborting.");
+            return;
+        }
+
+        if (!sourcePlace.getPresentCharacters().contains(character)) {
+            System.out.println("DEBUG: returnCharacter - Character '" + character.getName() + "' is not in the source place '" + sourcePlace.getName() + "'. Aborting.");
+            return;
+        }
+
+        try {
+            System.out.println("DEBUG: Attempting to delete " + character.getName() + " from " + sourcePlace.getName());
+            sourcePlace.deleteCharacter(character);
+            System.out.println("DEBUG: Successfully deleted " + character.getName() + " from " + sourcePlace.getName());
+            
+            System.out.println("DEBUG: Attempting to add " + character.getName() + " to " + this.place.getName());
+            this.place.addCharacter(character);
+            System.out.println("DEBUG: Successfully added " + character.getName() + " to " + this.place.getName());
+            System.out.println("✅ " + character.getName() + " has returned to " + this.place.getName());
+        } catch (Exception e) {
+            System.out.println("DEBUG: returnCharacter - Exception during return: " + e.getMessage());
+            System.out.println("❌ Return failed: " + e.getMessage());
+            // Re-add character to original place if return failed
+            sourcePlace.addCharacter(character);
         }
     }
 
