@@ -62,27 +62,6 @@ public class TheaterInvasion {
      * @param existantsPlaces The list of initialized places (Villages, Camps, etc.).
      * @param clanLeaders     The list of Clan Leaders capable of performing actions.
      */
-    @SuppressWarnings("unused")
-    /**
-     * Flag to control the main loop of the simulation thread.
-     * Declared volatile to ensure visibility across threads.
-     */
-    private volatile boolean isSimulationRunning = true;
-
-    /**
-     * Flag to pause the logic execution within the simulation thread without stopping it.
-     * Declared volatile to ensure visibility across threads.
-     */
-    private volatile boolean isSimulationPaused = false;
-
-    /**
-     * Constructs a new TheaterInvasion instance.
-     *
-     * @param theaterName     The name of the war theater (e.g., "Armorica").
-     * @param maxPlaces       The maximum number of places allowed (if applicable).
-     * @param existantsPlaces The list of initialized places (Villages, Camps, etc.).
-     * @param clanLeaders     The list of Clan Leaders capable of performing actions.
-     */
     public TheaterInvasion(String theaterName, int maxPlaces, ArrayList<AbstractPlace> existantsPlaces, ArrayList<ClanLeader> clanLeaders) {
         this.theaterName = theaterName;
         // maxPlaces parameter kept for API compatibility but not stored
@@ -90,53 +69,6 @@ public class TheaterInvasion {
         this.clanLeaders = new ArrayList<>(clanLeaders);
     }
 
-    /**
-     * Executes all automatic actions for a single game cycle.
-     * <p>
-     * This includes:
-     * <ul>
-     * <li>Handling random combats between characters in the same location.</li>
-     * <li>Updating character states (hunger, potion effects).</li>
-     * <li>Spawning new food items naturally.</li>
-     * <li>Aging and rotting existing food items.</li>
-     * </ul>
-     * </p>
-     *
-     * @param turn The current turn number (for display purposes).
-     */
-    private void runGameCycle(int turn) {
-        System.out.println("\n╔════════════════════════════════════╗");
-        System.out.println("║        NOUVEAU CYCLE (Tour " + turn + ")        ║");
-        System.out.println("╚════════════════════════════════════╝");
-
-        handleCombats();
-        updateCharactersState();
-        spawnFood();
-        rotFood();
-    }
-
-    /**
-     * Starts the game in <strong>Turn-Based Mode</strong>.
-     * <p>
-     * In this mode, the game waits for user input (Enter key) to advance to the next turn.
-     * The user is prompted to perform actions via Clan Leaders at the end of every automatic cycle.
-     * </p>
-     */
-    public void runTurnBased() {
-        Scanner scanner = new Scanner(System.in);
-        int turn = 0;
-
-        System.out.println(">> MODE TOUR PAR TOUR ACTIVÉ.");
-
-        while (true) {
-            turn++;
-            runGameCycle(turn); // Automatic logic
-            handleUserTurn(scanner); // Mandatory user interaction
-
-            System.out.println("... Fin du tour. Appuyez sur Entrée pour le tour suivant ...");
-            scanner.nextLine();
-        }
-    }
 
     /**
      * Executes all automatic actions for a single game cycle.
@@ -191,79 +123,6 @@ public class TheaterInvasion {
     // --- MODE 2 : SIMULATION (Temps réel avec Pause) ---
 
     /**
-     * Starts the game in <strong>Simulation Mode</strong>.
-     * <p>
-     * In this mode, a separate thread executes the game cycles automatically at a fixed interval.
-     * The main thread listens for user input to toggle the PAUSE state.
-     * When paused, the user can access the Clan Leader menu to perform actions.
-     * </p>
-     */
-    public void runSimulation() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println(">> MODE SIMULATION ACTIVÉ.");
-        System.out.println(">> Le jeu tourne tout seul. Appuyez sur [ENTRÉE] à tout moment pour mettre en PAUSE.");
-
-        // Launch a separate thread for game logic
-        Thread gameThread = new Thread(() -> {
-            int turn = 0;
-            while (isSimulationRunning) {
-                if (!isSimulationPaused) {
-                    turn++;
-                    runGameCycle(turn);
-
-                    try {
-                        // Simulation speed: 2 seconds per turn
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                } else {
-                    // While paused, the thread sleeps briefly to save CPU resources
-                    try { Thread.sleep(200); } catch (InterruptedException e) {}
-                }
-            }
-        });
-
-        gameThread.start();
-
-        // The Main Thread listens to the keyboard for the Pause command
-        while (isSimulationRunning) {
-            // Blocks here until the user presses Enter
-            scanner.nextLine();
-
-            // Trigger Pause
-            isSimulationPaused = true;
-
-            // Small delay to let the display thread finish its current print
-            try { Thread.sleep(100); } catch (InterruptedException e) {}
-
-            System.out.println("\n⏸️  SIMULATION EN PAUSE ⏸️");
-            System.out.println("1. 🛠️ Faire des modifications (Menu Chefs de Clan)");
-            System.out.println("2. ▶️ Reprendre la simulation");
-            System.out.println("0. 🚪 Quitter le jeu");
-            System.out.print("Choix : ");
-
-            int choice = safeReadInt(scanner);
-
-            if (choice == 1) {
-                handleUserTurn(scanner); // Access standard menu
-            } else if (choice == 0) {
-                System.out.println("Arrêt du jeu...");
-                isSimulationRunning = false;
-                System.exit(0);
-            }
-
-            System.out.println("▶️  Reprise de la simulation...");
-            isSimulationPaused = false;
-        }
-    }
-
-    /**
-     * Safely reads an integer from the scanner, handling non-integer inputs.
-     *
-     * @param scanner The input scanner.
-     * @return The parsed integer, or -1 if the input was invalid.
      * Starts the game in <strong>Simulation Mode</strong>.
      * <p>
      * In this mode, a separate thread executes the game cycles automatically at a fixed interval.

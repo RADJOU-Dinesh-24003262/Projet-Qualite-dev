@@ -176,6 +176,7 @@ public class Main {
         System.out.println("2. ⏩ Simulation Mode (Automatic with Pause)");
         System.out.print("Your choice: ");
 
+        Scanner scanner = new Scanner(System.in);
         int choice = -1;
         try {
             choice = Integer.parseInt(scanner.nextLine().trim());
@@ -188,6 +189,8 @@ public class Main {
         } else {
             armorica.runTurnBased();
         }
+
+        scanner.close();
 
     }
 }
