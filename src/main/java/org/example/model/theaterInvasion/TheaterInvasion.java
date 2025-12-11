@@ -76,7 +76,7 @@ public class TheaterInvasion {
      *
      * @param turn The current turn number (for display purposes).
      */
-    private void runGameCycle(int turn) {
+    public void runGameCycle(int turn) {
         System.out.println("\n╔════════════════════════════════════╗");
         System.out.println("║        NOUVEAU CYCLE (Tour " + turn + ")        ║");
         System.out.println("╚════════════════════════════════════╝");
@@ -213,6 +213,10 @@ public class TheaterInvasion {
 
     public String getTheaterName() {
         return theaterName;
+    }
+
+    public ArrayList<ClanLeader> getClanLeaders() {
+        return clanLeaders;
     }
 
     /**
