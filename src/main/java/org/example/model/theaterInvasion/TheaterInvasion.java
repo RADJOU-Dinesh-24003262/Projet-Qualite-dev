@@ -235,40 +235,34 @@ public class TheaterInvasion {
         System.out.println(">> Sounds of battle...");
 
         for (AbstractPlace place : existantsPlaces) {
-            boolean isBattlefield = place instanceof Battlefield;
-            // Slight increase in combat chances to make the simulation more dynamic
-            int chanceOfFight = isBattlefield ? 80 : 30;
+            // CORRECTION : On vérifie que c'est bien un champ de bataille.
+            // Si c'est un village ou un camp, pas de combat automatique.
+            if (!(place instanceof Battlefield)) {
+                continue;
+            }
 
-            if (RANDOM.nextInt(100) < chanceOfFight) {
+            // Chance de combat sur le champ de bataille (ex: 80%)
+            if (RANDOM.nextInt(100) < 80) {
                 List<AbstractCharacter> chars = place.getPresentCharacters();
 
                 if (chars.size() >= 2) {
                     AbstractCharacter c1 = chars.get(RANDOM.nextInt(chars.size()));
                     AbstractCharacter c2 = chars.get(RANDOM.nextInt(chars.size()));
 
-                    // Ensure they don't fight themselves and are alive
+                    // On s'assure qu'ils sont vivants et différents
                     if (c1 != c2 && c1.isAlive() && c2.isAlive()) {
                         System.out.println("⚔️ Fight in " + place.getName() + " : " + c1.getName() + " vs " + c2.getName());
 
-                        // Call the existing combat method
+                        // Appel de la méthode de combat (qui gère les dégâts basés sur la force/endurance)
                         c1.mutualFight(c2);
 
-                        // --- COMBAT LOGIC CORRECTION ---
-                        // Force damage here in case mutualFight didn't do it correctly.
-                        // Assuming characters have getHealth/setHealth methods.
-                        // Random damage between 5 and 15.
-                        int dmg1 = RANDOM.nextInt(11) + 5;
-                        int dmg2 = RANDOM.nextInt(11) + 5;
+                        // Affichage pour debug
+                        System.out.println("   -> " + c1.getName() + " (HP: " + c1.getHealth() + ")");
+                        System.out.println("   -> " + c2.getName() + " (HP: " + c2.getHealth() + ")");
 
-                        c1.setHealth(c1.getHealth() - dmg1);
-                        c2.setHealth(c2.getHealth() - dmg2);
-
-                        System.out.println("   -> " + c1.getName() + " takes " + dmg1 + " dmg (HP: " + Math.max(0, c1.getHealth()) + ")");
-                        System.out.println("   -> " + c2.getName() + " takes " + dmg2 + " dmg (HP: " + Math.max(0, c2.getHealth()) + ")");
-                        // ------------------------------------
-
-                        handlePostFight(place, c1, isBattlefield);
-                        handlePostFight(place, c2, isBattlefield);
+                        // Gestion des conséquences (mort ou fuite)
+                        handlePostFight(place, c1, true); // true car on est forcément sur un Battlefield
+                        handlePostFight(place, c2, true);
                     }
                 }
             }
