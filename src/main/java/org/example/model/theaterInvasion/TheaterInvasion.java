@@ -93,14 +93,14 @@ public class TheaterInvasion {
             this.colony.advanceTime();
 
             for (AbstractPlace place : existantsPlaces) {
-                if (place instanceof org.example.model.places.Enclosure) {
+                if (place instanceof Enclosure) {
                     for (org.example.model.pack.Pack pack : colony.getPacks()) {
                         for (org.example.model.character.werewolf.Werewolf w : pack.getMembers()) {
                             if (!place.getPresentCharacters().contains(w)) {
                                 try {
                                     place.addCharacter(w);
                                     System.out.println("👶 Le nouveau-né " + w.getName() + " rejoint l'enclos !");
-                                } catch (Exception e) { /* Ignore si plein */ }
+                                } catch (Exception e) { System.err.println("Error adding new-born werewolf to enclosure: " + e.getMessage()); }
                             }
                         }
                     }

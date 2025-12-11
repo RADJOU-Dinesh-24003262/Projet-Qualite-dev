@@ -151,5 +151,40 @@
         <Class name="org.example.ui.ControlPanel"/>
         <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
     </Match>
+
+    <!-- 
+        TheaterInvasion expose la colonie directement, ce qui est intentionnel
+        pour permettre la gestion globale de l'état du jeu.
+    -->
+    <Match>
+        <Class name="org.example.model.theaterInvasion.TheaterInvasion"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!--
+        ControlPanel stocke les références à TheaterInvasion et GameSelectionModel
+        qui sont des objets mutables partagés avec l'UI pour interagir avec l'état du jeu.
+    -->
+    <Match>
+        <Class name="org.example.ui.ControlPanel"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!--
+        GameSelectionModel expose selectedCharacterProperty() pour la liaison JavaFX,
+        ce qui est un pattern standard pour les propriétés observables.
+    -->
+    <Match>
+        <Class name="org.example.ui.GameSelectionModel"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    
+    <!--
+        PlacesView stocke la référence à GameSelectionModel pour interagir avec les sélections.
+    -->
+    <Match>
+        <Class name="org.example.ui.PlacesView"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
     
 </FindBugsFilter>
