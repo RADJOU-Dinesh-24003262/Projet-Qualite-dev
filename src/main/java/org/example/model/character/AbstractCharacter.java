@@ -51,6 +51,8 @@ public abstract class AbstractCharacter {
 
     protected boolean isAlive;
 
+    protected int maxHealth;
+
     protected AbstractPlace originPlace;
 
     /**
@@ -81,6 +83,7 @@ public abstract class AbstractCharacter {
         this.age = age;
         this.strength = strength;
         this.health = health;
+        this.maxHealth = health;
         this.isAlive = true;
     }
 
@@ -317,14 +320,24 @@ public abstract class AbstractCharacter {
      * @param newHealth The new health value.
      */
     public void setHealth(int newHealth) {
-        System.out.println("DEBUG: setHealth for " + this.getName() + ". Current health: " + this.health + ", requested new health: " + newHealth + ", isAlive: " + this.isAlive);
-        this.health = Math.max(0, newHealth);
+        int limit = this.maxHealth;
+        if (limit == 0) {
+            limit = Integer.MAX_VALUE;
+        }
+
+        int clampedHealth = Math.max(0, Math.min(newHealth, limit));
+        this.health = clampedHealth;
+
         if (this.isAlive && this.health == 0) {
             System.out.println("DEBUG: Health is 0, calling die() for " + this.getName());
             die();
         }
-        System.out.println("DEBUG: setHealth for " + this.getName() + " finished. New health: " + this.health + ", isAlive: " + this.isAlive);
+
+        System.out.println("DEBUG: setHealth for " + this.getName()
+                + " finished. New health: " + this.health
+                + ", isAlive: " + this.isAlive);
     }
+
 
     /**
      * Gets the character's hunger level.
@@ -356,6 +369,22 @@ public abstract class AbstractCharacter {
      */
     public void setBelligerence(int belligerence) {
         this.belligerence = belligerence;
+    }
+
+    /**
+     * Gets the character's max health.
+     * @return The max health.
+     */
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    /**
+     * Sets the character's belligerence level.
+     * @param maxHealth The new belligerence level.
+     */
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**
