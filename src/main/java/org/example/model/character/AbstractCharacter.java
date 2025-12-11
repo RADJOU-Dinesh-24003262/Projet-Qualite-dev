@@ -51,6 +51,8 @@ public abstract class AbstractCharacter {
 
     protected boolean isAlive;
 
+    protected int maxHealth;
+
     protected AbstractPlace originPlace;
 
     /**
@@ -81,6 +83,7 @@ public abstract class AbstractCharacter {
         this.age = age;
         this.strength = strength;
         this.health = health;
+        this.maxHealth = health;
         this.isAlive = true;
     }
 
@@ -299,7 +302,14 @@ public abstract class AbstractCharacter {
      * @param health The new health value.
      */
     public void setHealth(int health) {
+        int limit = this.maxHealth;
         this.health = Math.max(0, health);
+
+        if (limit == 0) {
+            limit = Integer.MAX_VALUE;
+        }
+
+        this.health = Math.max(0, Math.min(health, limit));
     }
 
     /**
@@ -332,6 +342,22 @@ public abstract class AbstractCharacter {
      */
     public void setBelligerence(int belligerence) {
         this.belligerence = belligerence;
+    }
+
+    /**
+     * Gets the character's max health.
+     * @return The max health.
+     */
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    /**
+     * Sets the character's belligerence level.
+     * @param maxHealth The new belligerence level.
+     */
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**
