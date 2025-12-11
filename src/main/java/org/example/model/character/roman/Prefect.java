@@ -18,6 +18,17 @@ public class Prefect extends Roman implements Leader {
     private int decisionsMade = 0;
 
     /**
+     * Constructs a Prefect character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Prefect(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Performs a leadership action by administering the province and maintaining order.
      * This improves the prefect's leadership score and increases their count of decisions made.
      */

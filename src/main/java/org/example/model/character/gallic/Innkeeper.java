@@ -18,6 +18,17 @@ public class Innkeeper extends Gallic implements Worker {
     private int customersServed = 0;
 
     /**
+     * Constructs an Innkeeper character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Innkeeper(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Performs the innkeeper's work action. This involves serving food and welcoming guests,
      * which increases the number of customers served and their productivity.
      */

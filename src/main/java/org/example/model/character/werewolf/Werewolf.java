@@ -51,6 +51,17 @@ public class Werewolf extends AbstractCharacter implements Combatant {
      */
     public Werewolf(String name) { super(name); }
 
+    /**
+     * Constructs a Werewolf character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Werewolf(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
     // ====== Delegated Behaviors ======
 
     /**

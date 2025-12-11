@@ -158,6 +158,52 @@ public class ControlPanel {
         btnTransfer.setOnAction(e -> handleTransfer());
 
         actionPanel.getChildren().addAll(btnCreateChar, new Separator(), btnHeal, btnFeed, new Separator(), btnAskPotion, btnGivePotion, new Separator(), btnTransfer);
+
+        Label lblColony = new Label("🐺 GESTION COLONIE");
+        lblColony.setStyle("-fx-font-weight: bold; -fx-text-fill: #7f8c8d; -fx-font-size: 11px; -fx-padding: 10 0 0 0;");
+
+        Button btnColonyStats = UIStyles.createStyledButton("📊 Stats Meute", "#8e44ad");
+        btnColonyStats.setOnAction(e -> {
+            if (game.getColony() != null) {
+                // Affiche les détails dans la console (redirigée vers le GameLogger)
+                game.getColony().displayColonyStats();
+                game.getColony().displayAllWerewolves();
+            } else {
+                System.out.println("❌ Aucune colonie active.");
+            }
+        });
+
+        Button btnForceReproduction = UIStyles.createStyledButton("💕 Forcer Repro.", "#e84393");
+        btnForceReproduction.setOnAction(e -> {
+            if (game.getColony() != null && !game.getColony().getPacks().isEmpty()) {
+                System.out.println("💕 Déclenchement manuel de la saison des amours...");
+                // On force la reproduction sur la première meute pour l'exemple
+                game.getColony().getPacks().get(0).reproduce();
+                refreshCallback.run(); // Met à jour l'interface graphique (nouveaux louveteaux)
+            }
+        });
+
+        Button btnHowl = UIStyles.createStyledButton("📢 Hurlement", "#34495e");
+        btnHowl.setOnAction(e -> {
+            if (game.getColony() != null) {
+                System.out.println("📢 Un hurlement résonne dans la colonie...");
+                // Déclenche des hurlements aléatoires
+                // Note: Cette méthode est privée dans Colony, idéalement il faudrait une méthode publique 'triggerRandomEvent'
+                // Pour l'instant, on simule en avançant le temps ou en appelant une méthode spécifique si vous l'ajoutez.
+                // Ici, on va simplement afficher l'état pour confirmer l'action.
+                game.getColony().displayAllWerewolves();
+            }
+        });
+
+        // Ajout des nouveaux boutons au panneau
+        actionPanel.getChildren().addAll(
+                // ... boutons existants ...
+                new Separator(),
+                lblColony,
+                btnColonyStats,
+                btnForceReproduction,
+                btnHowl
+        );
     }
 
     private ClanLeader getSelectedLeader() { return leaderSelector.getValue(); }

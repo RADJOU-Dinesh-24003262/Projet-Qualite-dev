@@ -37,16 +37,10 @@ class TheaterInvasionIntegrationTest {
         ArrayList<ClanLeader> leaders = new ArrayList<>();
 
         // Créer village gaulois avec personnages
-        Gallic asterix = new Gallic();
-        asterix.setName("Asterix");
-        asterix.setHealth(100);
-        asterix.setStrength(30);
+        Gallic asterix = new Gallic("Asterix", 35, 30, 100);
         asterix.setStamina(20);
 
-        Druid panoramix = new Druid();
-        panoramix.setName("Panoramix");
-        panoramix.setHealth(80);
-        panoramix.setStrength(10);
+        Druid panoramix = new Druid("Panoramix", 65, 10, 80);
 
         ArrayList<org.example.model.character.AbstractCharacter> gauls = new ArrayList<>();
         gauls.add(asterix);
@@ -60,10 +54,7 @@ class TheaterInvasionIntegrationTest {
                 gauls, gallicFood);
 
         // Créer camp romain avec personnages
-        Legionary brutus = new Legionary();
-        brutus.setName("Brutus");
-        brutus.setHealth(100);
-        brutus.setStrength(25);
+        Legionary brutus = new Legionary("Brutus", 30, 25, 100);
         brutus.setStamina(30);
 
         ArrayList<org.example.model.character.AbstractCharacter> romans = new ArrayList<>();
@@ -80,9 +71,7 @@ class TheaterInvasionIntegrationTest {
                 new ArrayList<>(), new ArrayList<>());
 
         // Créer enclos pour loups-garous
-        Werewolf wolfie = new Werewolf("Wolfie");
-        wolfie.setHealth(120);
-        wolfie.setStrength(40);
+        Werewolf wolfie = new Werewolf("Wolfie", 5, 40, 120);
 
         ArrayList<Werewolf> werewolves = new ArrayList<>();
         werewolves.add(wolfie);

@@ -70,6 +70,21 @@ public abstract class AbstractCharacter {
     }
 
     /**
+     * Constructs a character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public AbstractCharacter(String name, int age, int strength, int health) {
+        this.name = name;
+        this.age = age;
+        this.strength = strength;
+        this.health = health;
+        this.isAlive = true;
+    }
+
+    /**
      * Sets the character's place of origin.
      * @param place The place of origin.
      */

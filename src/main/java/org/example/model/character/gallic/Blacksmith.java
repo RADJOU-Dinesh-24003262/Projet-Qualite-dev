@@ -18,6 +18,17 @@ public class Blacksmith extends Gallic implements Worker {
     private int itemsCrafted = 0;
 
     /**
+     * Constructs a Blacksmith character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Blacksmith(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Performs the blacksmith's work action. This involves forging weapons and repairing armor,
      * which increases the number of items crafted, productivity, and slightly increases strength.
      */

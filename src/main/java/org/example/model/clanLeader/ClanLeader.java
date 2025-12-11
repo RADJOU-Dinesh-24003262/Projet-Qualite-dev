@@ -1,8 +1,14 @@
 package org.example.model.clanLeader;
 
 import org.example.model.character.AbstractCharacter;
+import org.example.model.character.gallic.Blacksmith;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
+import org.example.model.character.gallic.Innkeeper;
+import org.example.model.character.gallic.Merchant;
+import org.example.model.character.roman.General;
+import org.example.model.character.roman.Legionary;
+import org.example.model.character.roman.Prefect;
 import org.example.model.character.roman.Roman;
 import org.example.model.character.werewolf.Werewolf;
 import org.example.model.food.FoodItem;
@@ -87,7 +93,7 @@ public final class ClanLeader {
             System.out.println("No place assigned to this clan leader.");
             return;
         }
-        
+
         System.out.println("\n" + "=".repeat(60));
         System.out.println("🏛️  EXAMINATION BY CLAN LEADER: " + name);
         System.out.println("=".repeat(60));
@@ -109,21 +115,31 @@ public final class ClanLeader {
         }
 
         try {
-            Gallic newCharacter = characterType.getDeclaredConstructor().newInstance();
-            newCharacter.setName(characterName);
-            
-            // Set default attributes
-            newCharacter.setHealth(100);
-            newCharacter.setStrength(20);
+            Gallic newCharacter;
+            int defaultAge = 25;
+            int defaultStrength = 20;
+            int defaultHealth = 100;
+
+            if (characterType.equals(Druid.class)) {
+                newCharacter = new Druid(characterName, 65, 15, 80);
+            } else if (characterType.equals(Blacksmith.class)) {
+                newCharacter = new Blacksmith(characterName, 40, 40, 110);
+            } else if (characterType.equals(Innkeeper.class)) {
+                newCharacter = new Innkeeper(characterName, 38, 10, 90);
+            } else if (characterType.equals(Merchant.class)) {
+                newCharacter = new Merchant(characterName, 42, 5, 85);
+            } else {
+                newCharacter = new Gallic(characterName, defaultAge, defaultStrength, defaultHealth);
+            }
+
             newCharacter.setStamina(15);
             newCharacter.setHunger(50);
-            newCharacter.setAge(25);
-            
+
             place.addCharacter(newCharacter);
             System.out.println("✅ Character '" + characterName + "' created successfully!");
             return newCharacter;
-            
-        } catch (ReflectiveOperationException | IllegalArgumentException e) {
+
+        } catch (IllegalArgumentException e) {
             System.out.println("❌ Failed to create character: " + e.getMessage());
             return null;
         }
@@ -144,21 +160,27 @@ public final class ClanLeader {
         }
 
         try {
-            Roman newCharacter = characterType.getDeclaredConstructor().newInstance();
-            newCharacter.setName(characterName);
-            
-            // Set default attributes
-            newCharacter.setHealth(100);
-            newCharacter.setStrength(25);
+            Roman newCharacter;
+            int defaultAge = 28;
+            int defaultStrength = 25;
+            int defaultHealth = 100;
+
+            if (characterType.equals(General.class)) {
+                newCharacter = new General(characterName, 45, 60, 120);
+            } else if (characterType.equals(Prefect.class)) {
+                newCharacter = new Prefect(characterName, 40, 30, 100);
+            } else {
+                newCharacter = new Legionary(characterName, defaultAge, defaultStrength, defaultHealth);
+            }
+
             newCharacter.setStamina(20);
             newCharacter.setHunger(50);
-            newCharacter.setAge(28);
-            
+
             place.addCharacter(newCharacter);
             System.out.println("✅ Character '" + characterName + "' created successfully!");
             return newCharacter;
-            
-        } catch (ReflectiveOperationException | IllegalArgumentException e) {
+
+        } catch (IllegalArgumentException e) {
             System.out.println("❌ Failed to create character: " + e.getMessage());
             return null;
         }
@@ -178,20 +200,14 @@ public final class ClanLeader {
         }
 
         try {
-            Werewolf newWerewolf = new Werewolf();
-            newWerewolf.setName(characterName);
-            
-            // Werewolves have higher stats
-            newWerewolf.setHealth(150);
-            newWerewolf.setStrength(40);
+            Werewolf newWerewolf = new Werewolf(characterName, 100, 40, 150);
             newWerewolf.setStamina(30);
             newWerewolf.setHunger(80);
-            newWerewolf.setAge(100);
-            
+
             place.addCharacter(newWerewolf);
             System.out.println("✅ Werewolf '" + characterName + "' created successfully!");
             return newWerewolf;
-            
+
         } catch (Exception e) {
             System.out.println("❌ Failed to create werewolf: " + e.getMessage());
             return null;
@@ -240,7 +256,7 @@ public final class ClanLeader {
 
         int healthBefore = character.getHealth();
         place.healCharacter(character);
-        System.out.println("✅ Character '" + character.getName() + "' healed! Health: " 
+        System.out.println("✅ Character '" + character.getName() + "' healed! Health: "
                           + healthBefore + " → " + character.getHealth());
     }
 
@@ -311,7 +327,7 @@ public final class ClanLeader {
 
         int hungerBefore = character.getHunger();
         place.feedCharacter(character, food);
-        System.out.println("✅ " + character.getName() + " ate " + food.getName() 
+        System.out.println("✅ " + character.getName() + " ate " + food.getName()
                           + "! Hunger: " + hungerBefore + " → " + character.getHunger());
     }
 
@@ -397,7 +413,7 @@ public final class ClanLeader {
         try {
             place.deleteCharacter(character);
             battlefield.addCharacter(character);
-            System.out.println("✅ " + character.getName() + " transferred to battlefield '" 
+            System.out.println("✅ " + character.getName() + " transferred to battlefield '"
                               + battlefield.getName() + "'");
         } catch (Exception e) {
             System.out.println("❌ Transfer failed: " + e.getMessage());
@@ -437,7 +453,7 @@ public final class ClanLeader {
         try {
             place.deleteCharacter(character);
             enclosure.addCharacter(character);
-            System.out.println("✅ Werewolf '" + character.getName() + "' transferred to enclosure '" 
+            System.out.println("✅ Werewolf '" + character.getName() + "' transferred to enclosure '"
                               + enclosure.getName() + "'");
         } catch (Exception e) {
             System.out.println("❌ Transfer failed: " + e.getMessage());

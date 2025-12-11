@@ -18,6 +18,17 @@ public class Merchant extends Gallic implements Worker {
     private int dealsCompleted = 0;
 
     /**
+     * Constructs a Merchant character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Merchant(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Performs the merchant's work action. This involves trading goods and negotiating deals,
      * which increases the number of deals completed and their productivity.
      */

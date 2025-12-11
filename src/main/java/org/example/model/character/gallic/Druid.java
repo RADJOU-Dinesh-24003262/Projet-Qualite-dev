@@ -20,6 +20,17 @@ public class Druid extends Gallic implements Combatant, Leader, Worker {
     private int productivity = 90;
 
     /**
+     * Constructs a Druid character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Druid(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Performs a combat action using magical techniques.
      * This increases the druid's belligerence.
      */

@@ -60,22 +60,13 @@ public class Main {
         // --- 3. Character Creation ---
 
         // Gauls
-        Gallic asterix = new Gallic();
-        asterix.setName("Asterix");
-        asterix.setHealth(100);
-        asterix.setStrength(50);
+        Gallic asterix = new Gallic("Asterix", 35, 50, 100);
         asterix.setStamina(80);
 
-        Gallic obelix = new Gallic();
-        obelix.setName("Obelix");
-        obelix.setHealth(200);
-        obelix.setStrength(150);
+        Gallic obelix = new Gallic("Obelix", 36, 150, 200);
         obelix.setStamina(100);
 
-        Druid panoramix = new Druid();
-        panoramix.setName("Getafix"); // English name for Panoramix
-        panoramix.setHealth(80);
-        panoramix.setStrength(10);
+        Druid panoramix = new Druid("Getafix", 65, 10, 80); // English name for Panoramix
 
         ArrayList<AbstractCharacter> gauls = new ArrayList<>();
         gauls.add(asterix);
@@ -83,16 +74,10 @@ public class Main {
         gauls.add(panoramix);
 
         // Romans
-        Legionary brutus = new Legionary();
-        brutus.setName("Brutus");
-        brutus.setHealth(100);
-        brutus.setStrength(40);
+        Legionary brutus = new Legionary("Brutus", 30, 40, 100);
         brutus.setStamina(50);
 
-        Legionary minus = new Legionary();
-        minus.setName("Minus");
-        minus.setHealth(90);
-        minus.setStrength(30);
+        Legionary minus = new Legionary("Minus", 25, 30, 90);
         minus.setStamina(40);
 
         ArrayList<AbstractCharacter> romans = new ArrayList<>();
@@ -100,9 +85,7 @@ public class Main {
         romans.add(minus);
 
         // Fantasy Creatures (Werewolves)
-        Werewolf wolfie = new Werewolf("Wolfie");
-        wolfie.setHealth(120);
-        wolfie.setStrength(70);
+        Werewolf wolfie = new Werewolf("Wolfie", 5, 70, 120);
         wolfie.setStamina(60);
 
         ArrayList<Werewolf> werewolves = new ArrayList<>();

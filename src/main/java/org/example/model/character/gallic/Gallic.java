@@ -21,6 +21,17 @@ public class Gallic extends AbstractCharacter {
     }
 
     /**
+     * Constructs a Gallic character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Gallic(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Gets the list of food types that a Gallic character can eat.
      * Gauls can eat boar, fish, and wine.
      *

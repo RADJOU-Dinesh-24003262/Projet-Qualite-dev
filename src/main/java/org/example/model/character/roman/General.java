@@ -19,6 +19,17 @@ public class General extends Roman implements Combatant, Leader {
     private int battlesWon = 0;
 
     /**
+     * Constructs a General character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public General(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Performs a combat action, leading a charge into battle.
      * This increases the general's belligerence and the count of battles won.
      */

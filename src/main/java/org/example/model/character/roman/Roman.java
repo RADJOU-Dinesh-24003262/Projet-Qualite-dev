@@ -21,6 +21,17 @@ public class Roman extends AbstractCharacter {
     }
 
     /**
+     * Constructs a Roman character with specified attributes.
+     * @param name The name of the character.
+     * @param age The age of the character.
+     * @param strength The strength of the character.
+     * @param health The health of the character.
+     */
+    public Roman(String name, int age, int strength, int health) {
+        super(name, age, strength, health);
+    }
+
+    /**
      * Gets the list of food types that a Roman character can eat.
      * Romans can eat boar, honey, wine, and mead.
      *

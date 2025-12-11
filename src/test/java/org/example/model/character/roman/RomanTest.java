@@ -14,10 +14,7 @@ class RomanTest {
 
     @BeforeEach
     void setUp() {
-        roman = new Roman();
-        roman.setName("Julius");
-        roman.setHealth(100);
-        roman.setStrength(25);
+        roman = new Roman("Julius", 52, 25, 100);
         roman.setStamina(20);
     }
 
@@ -86,21 +83,21 @@ class RomanTest {
     @Test
     @DisplayName("General hérite de Roman")
     void testGeneralIsRoman() {
-        General general = new General();
+        General general = new General("Maximus", 40, 80, 150);
         assertInstanceOf(Roman.class, general);
     }
 
     @Test
     @DisplayName("Legionary hérite de Roman")
     void testLegionaryIsRoman() {
-        Legionary legionary = new Legionary();
+        Legionary legionary = new Legionary("Titus", 30, 60, 100);
         assertInstanceOf(Roman.class, legionary);
     }
 
     @Test
     @DisplayName("Prefect hérite de Roman")
     void testPrefectIsRoman() {
-        Prefect prefect = new Prefect();
+        Prefect prefect = new Prefect("Pilatus", 45, 40, 90);
         assertInstanceOf(Roman.class, prefect);
     }
 

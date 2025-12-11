@@ -31,8 +31,8 @@ public class UIStylesTest {
     @Test
     void testGetIconFor() {
         // Arrange
-        Druid druid = new Druid();
-        Legionary legionary = new Legionary();
+        Druid druid = new Druid("Panoramix", 65, 20, 80);
+        Legionary legionary = new Legionary("Titus", 30, 60, 100);
 
         // Act & Assert
         assertEquals("🧪", UIStyles.getIconFor(druid), "L'icône du Druide doit être 🧪");

@@ -12,6 +12,7 @@ import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
 import org.example.model.character.roman.Legionary;
 import org.example.model.clanLeader.ClanLeader;
+import org.example.model.colony.Colony;
 import org.example.model.food.FoodItem;
 import org.example.model.food.FoodItemType;
 import org.example.model.places.AbstractPlace;
@@ -33,6 +34,7 @@ public class TheaterInvasion {
     private String theaterName;
     private ArrayList<AbstractPlace> existantsPlaces;
     private ArrayList<ClanLeader> clanLeaders;
+    private Colony colony;
 
     /**
      * Flag to control the main loop of the simulation thread.
@@ -86,6 +88,25 @@ public class TheaterInvasion {
         updateCharactersState();
         spawnFood();
         rotFood();
+
+        if (this.colony != null) {
+            this.colony.advanceTime();
+
+            for (AbstractPlace place : existantsPlaces) {
+                if (place instanceof org.example.model.places.Enclosure) {
+                    for (org.example.model.pack.Pack pack : colony.getPacks()) {
+                        for (org.example.model.character.werewolf.Werewolf w : pack.getMembers()) {
+                            if (!place.getPresentCharacters().contains(w)) {
+                                try {
+                                    place.addCharacter(w);
+                                    System.out.println("👶 Le nouveau-né " + w.getName() + " rejoint l'enclos !");
+                                } catch (Exception e) { /* Ignore si plein */ }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // --- MODE 2 : SIMULATION (Temps réel avec Pause) ---
@@ -583,5 +604,13 @@ public class TheaterInvasion {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void setColony(Colony colony) {
+        this.colony = colony;
+    }
+
+    public Colony getColony() {
+        return this.colony;
     }
 }

@@ -14,10 +14,7 @@ class GallicTest {
 
     @BeforeEach
     void setUp() {
-        gallic = new Gallic();
-        gallic.setName("Asterix");
-        gallic.setHealth(100);
-        gallic.setStrength(30);
+        gallic = new Gallic("Asterix", 35, 30, 100);
         gallic.setStamina(15);
     }
 
@@ -79,28 +76,28 @@ class GallicTest {
     @Test
     @DisplayName("Blacksmith hérite de Gallic")
     void testBlacksmithIsGallic() {
-        Blacksmith blacksmith = new Blacksmith();
+        Blacksmith blacksmith = new Blacksmith("Cetautomatix", 40, 50, 100);
         assertInstanceOf(Gallic.class, blacksmith);
     }
 
     @Test
     @DisplayName("Druid hérite de Gallic")
     void testDruidIsGallic() {
-        Druid druid = new Druid();
+        Druid druid = new Druid("Panoramix", 65, 20, 80);
         assertInstanceOf(Gallic.class, druid);
     }
 
     @Test
     @DisplayName("Innkeeper hérite de Gallic")
     void testInnkeeperIsGallic() {
-        Innkeeper innkeeper = new Innkeeper();
+        Innkeeper innkeeper = new Innkeeper("Odalix", 50, 15, 90);
         assertInstanceOf(Gallic.class, innkeeper);
     }
 
     @Test
     @DisplayName("Merchant hérite de Gallic")
     void testMerchantIsGallic() {
-        Merchant merchant = new Merchant();
+        Merchant merchant = new Merchant("Ordralfabétix", 45, 10, 85);
         assertInstanceOf(Gallic.class, merchant);
     }
 

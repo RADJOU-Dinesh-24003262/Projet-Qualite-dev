@@ -33,7 +33,7 @@ class ClanLeaderTest {
         foods.add(new FoodItem(FoodItemType.FISH));
         foods.add(new FoodItem(FoodItemType.WINE));
 
-        village = new GallicVillage("TestChief", "Test Village", 1000, 
+        village = new GallicVillage("TestChief", "Test Village", 1000,
                                     new ArrayList<>(), foods);
         
         clanLeader = new ClanLeader("Vitalstatistix", ClanLeader.Sex.MALE, 45, village);
@@ -178,8 +178,7 @@ class ClanLeaderTest {
     @Test
     @DisplayName("Soigner personnage absent ne fait rien")
     void testHealAbsentCharacter() {
-        Gallic outsider = new Gallic();
-        outsider.setName("Outsider");
+        Gallic outsider = new Gallic("Outsider", 30, 50, 100);
         outsider.setHealth(30);
         
         int healthBefore = outsider.getHealth();
@@ -213,8 +212,7 @@ class ClanLeaderTest {
     @Test
     @DisplayName("Nourrir personnage absent ne fait rien")
     void testFeedAbsentCharacter() {
-        Gallic outsider = new Gallic();
-        outsider.setName("Outsider");
+        Gallic outsider = new Gallic("Outsider", 30, 50, 100);
         FoodItem boar = new FoodItem(FoodItemType.BOAR);
         
         assertDoesNotThrow(() -> clanLeader.feedCharacter(outsider, boar));
@@ -256,8 +254,7 @@ class ClanLeaderTest {
     @Test
     @DisplayName("Demander potion à druide absent retourne null")
     void testAskAbsentDruidForPotion() {
-        Druid druid = new Druid();
-        druid.setName("Outsider Druid");
+        Druid druid = new Druid("Outsider Druid", 70, 15, 70);
         
         Potion potion = clanLeader.askDruidForPotion(druid);
         
