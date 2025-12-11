@@ -91,6 +91,10 @@ public abstract class AbstractCharacter {
      * @param other The character being attacked.
      */
     public void fight(AbstractCharacter other) {
+        if (!this.isAlive() || this.getHealth() <= 0) {
+            return;
+        }
+
         int damage = Math.max(this.strength - other.stamina, 0);
         other.setHealth(other.getHealth() - damage);
     }
@@ -100,6 +104,10 @@ public abstract class AbstractCharacter {
      * @param other The other character in the fight.
      */
     public void mutualFight(AbstractCharacter other) {
+        if (!this.isAlive() || this.getHealth() <= 0 || !other.isAlive() || other.getHealth() <= 0) {
+            return;
+        }
+
         int damageToOther = Math.max(0, this.strength - other.stamina);
         int damageToThis = Math.max(0, other.strength - this.stamina);
 
