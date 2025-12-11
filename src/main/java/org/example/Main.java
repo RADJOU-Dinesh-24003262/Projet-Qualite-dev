@@ -1,7 +1,9 @@
 package org.example;
 
-import org.example.model.places.RomanFortifiedCamp;
-import org.example.model.theaterInvasion.TheaterInvasion;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
@@ -13,12 +15,9 @@ import org.example.model.food.FoodItemType;
 import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
-import org.example.model.potion.Potion;
 import org.example.model.places.GallicVillage;
+import org.example.model.places.RomanFortifiedCamp;
 import org.example.model.theaterInvasion.TheaterInvasion;
-
-import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * Main entry point for the "Theater Invasion" application.
@@ -176,7 +175,7 @@ public class Main {
         System.out.println("2. ⏩ Simulation Mode (Automatic with Pause)");
         System.out.print("Your choice: ");
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         int choice = -1;
         try {
             choice = Integer.parseInt(scanner.nextLine().trim());

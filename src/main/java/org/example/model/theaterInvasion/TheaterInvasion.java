@@ -11,8 +11,6 @@ import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
 import org.example.model.character.roman.Legionary;
-import org.example.model.character.roman.Roman;
-import org.example.model.character.werewolf.Werewolf;
 import org.example.model.clanLeader.ClanLeader;
 import org.example.model.food.FoodItem;
 import org.example.model.food.FoodItemType;
@@ -20,12 +18,6 @@ import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
 import org.example.model.potion.Potion;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Manages the main logic of the "Theater Invasion" simulation.
@@ -58,10 +50,11 @@ public class TheaterInvasion {
      * Constructs a new TheaterInvasion instance.
      *
      * @param theaterName     The name of the war theater (e.g., "Armorica").
-     * @param maxPlaces       The maximum number of places allowed (if applicable).
+     * @param maxPlaces       The maximum number of places allowed (kept for API compatibility).
      * @param existantsPlaces The list of initialized places (Villages, Camps, etc.).
      * @param clanLeaders     The list of Clan Leaders capable of performing actions.
      */
+    @SuppressWarnings("PMD.UnusedFormalParameter")
     public TheaterInvasion(String theaterName, int maxPlaces, ArrayList<AbstractPlace> existantsPlaces, ArrayList<ClanLeader> clanLeaders) {
         this.theaterName = theaterName;
         // maxPlaces parameter kept for API compatibility but not stored
@@ -105,7 +98,7 @@ public class TheaterInvasion {
      * </p>
      */
     public void runTurnBased() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         int turn = 0;
 
         System.out.println(">> MODE TOUR PAR TOUR ACTIVÉ.");
@@ -131,7 +124,7 @@ public class TheaterInvasion {
      * </p>
      */
     public void runSimulation() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
 
         System.out.println(">> MODE SIMULATION ACTIVÉ.");
         System.out.println(">> Le jeu tourne tout seul. Appuyez sur [ENTRÉE] à tout moment pour mettre en PAUSE.");
@@ -183,7 +176,7 @@ public class TheaterInvasion {
             } else if (choice == 0) {
                 System.out.println("Arrêt du jeu...");
                 isSimulationRunning = false;
-                System.exit(0);
+                return; // Sort de la boucle et de la méthode proprement
             }
 
             System.out.println("▶️  Reprise de la simulation...");
@@ -227,7 +220,7 @@ public class TheaterInvasion {
     }
 
     public ArrayList<ClanLeader> getClanLeaders() {
-        return clanLeaders;
+        return new ArrayList<>(clanLeaders);
     }
 
     /**
@@ -313,10 +306,9 @@ public class TheaterInvasion {
      */
     private void updateCharactersState() {
         System.out.println(">> Time passes (Hunger increases, Potion fades)...");
-        Random rand = new Random();
         for (AbstractPlace place : existantsPlaces) {
             for (AbstractCharacter c : place.getPresentCharacters()) {
-                if (rand.nextBoolean()) {
+                if (RANDOM.nextBoolean()) {
                     c.setHunger(c.getHunger() + 5);
                 }
                 if (c.getLevelMagicPotion() > 0) {
@@ -576,7 +568,7 @@ public class TheaterInvasion {
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         int turn = 0;
 
         while (true) {

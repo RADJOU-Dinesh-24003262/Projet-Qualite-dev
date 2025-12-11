@@ -77,8 +77,79 @@
         ClanLeaderMenu est une classe UI qui doit référencer son ClanLeader.
     -->
     <Match>
-        <Class name="org.example.ui.ClanLeaderMenu"/>
+        <Class name="org.example.ClanLeaderMenu"/>
         <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <!--
+        ==== CLASSES UI (JavaFX) ====
+        
+        Les classes UI exposent intentionnellement leurs composants JavaFX
+        pour permettre la liaison et l'interaction entre les vues.
+        C'est un pattern standard dans les applications JavaFX.
+    -->
+    
+    <!-- ControlPanel retourne des composants UI (Button, ComboBox, VBox) -->
+    <Match>
+        <Class name="org.example.ui.ControlPanel"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    
+    <!-- GameLogger retourne sa vue ListView -->
+    <Match>
+        <Class name="org.example.ui.GameLogger"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    
+    <!-- PlacesView retourne son conteneur -->
+    <Match>
+        <Class name="org.example.ui.PlacesView"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    
+    <!-- GameGUI initialise ses champs dans la méthode start() de JavaFX (pas le constructeur) -->
+    <Match>
+        <Class name="org.example.GameGUI"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+    
+    <!-- toUpperCase() sur du texte UI d'affichage est acceptable -->
+    <Match>
+        <Class name="org.example.GameGUI"/>
+        <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
+    
+    <!-- Classes anonymes UI (StringConverter) dans ControlPanel - exclues individuellement -->
+    <Match>
+        <Class name="org.example.ui.ControlPanel$1"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    </Match>
+    <Match>
+        <Class name="org.example.ui.ControlPanel$2"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    </Match>
+    <Match>
+        <Class name="org.example.ui.ControlPanel$3"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    </Match>
+    <Match>
+        <Class name="org.example.ui.ControlPanel$4"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    </Match>
+    
+    <!-- Méthode appelée dans le constructeur est acceptable car initActions() configure juste les handlers -->
+    <Match>
+        <Class name="org.example.ui.ControlPanel"/>
+        <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR"/>
+    </Match>
+    
+    <!-- 
+        Switch sans default dans un menu de création de personnage 
+        est acceptable car les autres cas ne créent pas de personnage
+    -->
+    <Match>
+        <Class name="org.example.ui.ControlPanel"/>
+        <Bug pattern="SF_SWITCH_NO_DEFAULT"/>
     </Match>
     
 </FindBugsFilter>

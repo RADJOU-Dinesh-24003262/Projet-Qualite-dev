@@ -1,25 +1,30 @@
 package org.example.ui;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.util.StringConverter;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
 import org.example.model.character.roman.Legionary;
-import org.example.model.character.werewolf.Werewolf;
 import org.example.model.clanLeader.ClanLeader;
 import org.example.model.food.FoodItem;
+import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
-import org.example.model.places.AbstractPlace;
 import org.example.model.potion.Potion;
 import org.example.model.theaterInvasion.TheaterInvasion;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 
 /**
  * Manages the right-hand panel containing game controls and Clan Leader actions.
@@ -83,10 +88,7 @@ public class ControlPanel {
             System.err.println("Warning: Could not load leaders. Ensure getClanLeaders() is public in TheaterInvasion.");
         }
 
-        leaderSelector.setConverter(new StringConverter<ClanLeader>() {
-            @Override public String toString(ClanLeader l) { return l == null ? "" : l.getName() + "\n(" + l.getPlace().getName() + ")"; }
-            @Override public ClanLeader fromString(String s) { return null; }
-        });
+        leaderSelector.setConverter(new ClanLeaderConverter());
 
         actionPanel = new VBox(10);
         actionPanel.setAlignment(Pos.CENTER);
@@ -221,10 +223,7 @@ public class ControlPanel {
         if (chars.isEmpty()) return;
 
         UIStyles.showCustomChoiceDialog("Magic Potion", "Who should drink?", "Character :", chars,
-                new StringConverter<AbstractCharacter>() {
-                    @Override public String toString(AbstractCharacter c) { return c == null ? "" : c.getName() + " (HP:" + c.getHealth() + ")"; }
-                    @Override public AbstractCharacter fromString(String s) { return null; }
-                }
+                new CharacterWithHealthConverter()
         ).ifPresent(target -> {
             Potion p = leader.askDruidForPotion(druid);
             leader.givePotionToCharacter(target, p);
@@ -240,17 +239,11 @@ public class ControlPanel {
         if (chars.isEmpty()) { System.out.println("❌ No one to transfer."); return; }
 
         UIStyles.showCustomChoiceDialog("Transfer - Step 1", "Who to move?", "Character :", chars,
-                new StringConverter<AbstractCharacter>() {
-                    @Override public String toString(AbstractCharacter c) { return c == null ? "" : c.getName(); }
-                    @Override public AbstractCharacter fromString(String s) { return null; }
-                }
+                new CharacterNameConverter()
         ).ifPresent(characterToMove -> {
             List<AbstractPlace> destinations = game.getExistantsPlaces().stream().filter(p -> p != leader.getPlace()).collect(Collectors.toList());
             UIStyles.showCustomChoiceDialog("Transfer - Step 2", "Where to?", "Place :", destinations,
-                    new StringConverter<AbstractPlace>() {
-                        @Override public String toString(AbstractPlace p) { return p == null ? "" : p.getName(); }
-                        @Override public AbstractPlace fromString(String s) { return null; }
-                    }
+                    new PlaceNameConverter()
             ).ifPresent(destination -> {
                 if (destination instanceof Battlefield) leader.transferToBattlefield(characterToMove, (Battlefield) destination);
                 else if (destination instanceof Enclosure) leader.transferToEnclosure(characterToMove, (Enclosure) destination);
@@ -265,5 +258,51 @@ public class ControlPanel {
             if (c instanceof Druid) return (Druid) c;
         }
         return null;
+    }
+
+    // Static inner classes for StringConverters (avoids SpotBugs SIC_INNER_SHOULD_BE_STATIC_ANON)
+    
+    private static final class ClanLeaderConverter extends StringConverter<ClanLeader> {
+        @Override
+        public String toString(ClanLeader l) {
+            return l == null ? "" : l.getName() + "\n(" + l.getPlace().getName() + ")";
+        }
+        @Override
+        public ClanLeader fromString(String s) {
+            return null;
+        }
+    }
+
+    private static final class CharacterWithHealthConverter extends StringConverter<AbstractCharacter> {
+        @Override
+        public String toString(AbstractCharacter c) {
+            return c == null ? "" : c.getName() + " (HP:" + c.getHealth() + ")";
+        }
+        @Override
+        public AbstractCharacter fromString(String s) {
+            return null;
+        }
+    }
+
+    private static final class CharacterNameConverter extends StringConverter<AbstractCharacter> {
+        @Override
+        public String toString(AbstractCharacter c) {
+            return c == null ? "" : c.getName();
+        }
+        @Override
+        public AbstractCharacter fromString(String s) {
+            return null;
+        }
+    }
+
+    private static final class PlaceNameConverter extends StringConverter<AbstractPlace> {
+        @Override
+        public String toString(AbstractPlace p) {
+            return p == null ? "" : p.getName();
+        }
+        @Override
+        public AbstractPlace fromString(String s) {
+            return null;
+        }
     }
 }
