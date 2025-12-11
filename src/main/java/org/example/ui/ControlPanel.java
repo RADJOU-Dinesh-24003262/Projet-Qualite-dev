@@ -104,6 +104,12 @@ public class ControlPanel {
     }
 
     public VBox getView() { return panel; }
+
+    public ComboBox<ClanLeader> getLeaderSelector() { return leaderSelector; }
+    public Button getBtnNextTurn() { return btnNextTurn; }
+    public ToggleButton getBtnAuto() { return btnAuto; }
+    public VBox getActionPanel() { return actionPanel; }
+
     public Button getBtnClearLog() { return btnClearLog; }
 
     public void setAutoModeVisuals(boolean isAuto) {

@@ -95,15 +95,20 @@ public class UIStyles {
 
     /**
      * Returns an emoji icon representing the character's class.
+     * <p>
+     * CORRECTION: We verify the most specific classes (Druid) BEFORE
+     * the generic classes (Gallic) to avoid inheritance errors.
+     * </p>
      *
      * @param c The character.
      * @return A string containing the emoji.
      */
     public static String getIconFor(AbstractCharacter c) {
+        if (c instanceof Druid) return "🧪";
         if (c instanceof Gallic) return "🐓";
         if (c instanceof Legionary) return "🛡️";
-        if (c instanceof Druid) return "🧪";
         if (c instanceof Werewolf) return "🐺";
+
         return "👤";
     }
 }
