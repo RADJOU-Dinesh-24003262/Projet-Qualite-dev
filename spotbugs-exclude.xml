@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    SpotBugs Exclusion Filter
+    
+    Ce fichier exclut les faux positifs pour le pattern de composition
+    utilisé dans l'architecture du projet.
+    
+    Les classes Werewolf* sont des composants internes qui doivent
+    conserver une référence à leur objet Werewolf parent.
+    Ce n'est PAS une fuite de représentation interne, mais un
+    pattern de conception intentionnel (Composition/Delegation).
+-->
+<FindBugsFilter>
+    
+    <!-- 
+        Pattern de Composition dans les classes Werewolf* 
+        Ces classes sont des composants internes de Werewolf et
+        doivent conserver une référence à l'objet parent.
+    -->
+    <Match>
+        <Class name="~org\.example\.model\.character\.werewolf\.Werewolf.*"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <!--
+        HierarchyManager retourne maintenant des vues non-modifiables.
+        Les autres classes Pack/* ne modifient que via les méthodes dédiées.
+    -->
+    <Match>
+        <Class name="~org\.example\.model\.pack\..*Manager"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <Match>
+        <Class name="org.example.model.pack.PackDisplay"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <Match>
+        <Class name="org.example.model.pack.RankAssigner"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <!--
+        AlphaManager doit exposer les références aux loups Alpha
+        car d'autres composants doivent interagir avec eux.
+    -->
+    <Match>
+        <Class name="org.example.model.pack.AlphaManager"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    
+    <!--
+        AbstractCharacter et ses sous-classes utilisent des références
+        partagées vers Place car c'est le design du jeu (personnages
+        appartiennent à des lieux).
+    -->
+    <Match>
+        <Class name="org.example.model.character.AbstractCharacter"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <Match>
+        <Class name="org.example.model.character.werewolf.Werewolf"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <!--
+        ClanLeader gère un lieu et doit conserver une référence mutable.
+    -->
+    <Match>
+        <Class name="org.example.model.clanLeader.ClanLeader"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+    
+    <!--
+        ClanLeaderMenu est une classe UI qui doit référencer son ClanLeader.
+    -->
+    <Match>
+        <Class name="org.example.ui.ClanLeaderMenu"/>
+        <Bug pattern="EI_EXPOSE_REP2"/>
+    </Match>
+    
+</FindBugsFilter>

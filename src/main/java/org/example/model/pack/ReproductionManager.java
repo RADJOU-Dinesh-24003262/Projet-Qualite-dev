@@ -1,17 +1,18 @@
 package org.example.model.pack;
 
-import org.example.model.character.AbstractCharacter;
-import org.example.model.character.werewolf.AgeCategory;
-import org.example.model.character.werewolf.Werewolf;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.example.model.character.AbstractCharacter;
+import org.example.model.character.werewolf.AgeCategory;
+import org.example.model.character.werewolf.Werewolf;
 
 public class ReproductionManager {
 
     private static final int MIN_LITTER_SIZE = 1;
     private static final int MAX_LITTER_SIZE = 7;
+    private static final Random RANDOM = new Random();
 
     private final HierarchyManager hierarchy;
 
@@ -20,15 +21,14 @@ public class ReproductionManager {
     }
 
     public List<Werewolf> reproduce() {
-        Random random = new Random();
-        int litterSize = random.nextInt(MAX_LITTER_SIZE - MIN_LITTER_SIZE + 1) + MIN_LITTER_SIZE;
+        int litterSize = RANDOM.nextInt(MAX_LITTER_SIZE - MIN_LITTER_SIZE + 1) + MIN_LITTER_SIZE;
 
         System.out.println("🐺 The alpha couple is reproducing! Litter size: " + litterSize);
 
         List<Werewolf> cubs = new ArrayList<>();
 
         // If no BETA yet → cubs are BETA, else GAMMA
-        Rank cubRank = hierarchy.getHierarchy().get(Rank.BETA).isEmpty()
+        Rank cubRank = hierarchy.getWerewolvesByRank(Rank.BETA).isEmpty()
                 ? Rank.BETA
                 : Rank.GAMMA;
 
@@ -39,9 +39,9 @@ public class ReproductionManager {
             // Assign random characteristics
             cub.setAge(0);
             cub.setAgeCategory(AgeCategory.YOUNG);
-            cub.setSex(random.nextBoolean() ? AbstractCharacter.Sex.MALE : AbstractCharacter.Sex.FEMALE);
-            cub.setStrength(10 + random.nextInt(20));
-            cub.setStamina(5 + random.nextInt(15));
+            cub.setSex(RANDOM.nextBoolean() ? AbstractCharacter.Sex.MALE : AbstractCharacter.Sex.FEMALE);
+            cub.setStrength(10 + RANDOM.nextInt(20));
+            cub.setStamina(5 + RANDOM.nextInt(15));
             cub.setHealth(100);
             cub.setHunger(50);
 

@@ -1,9 +1,10 @@
 package org.example.model.character.werewolf;
 
+import java.util.Locale;
+
 import org.example.model.pack.Pack;
 
-public class
-WerewolfHowlManager {
+public class WerewolfHowlManager {
 
     private final Werewolf w;
     private static final int SICK_THRESHOLD = 20;
@@ -22,14 +23,14 @@ WerewolfHowlManager {
     public void hearHowl(Werewolf sender, HowlType type) {
         if (!w.isAlive() || w.getHealth() < SICK_THRESHOLD) return;
 
-        System.out.println(w.getName() + " hears " + sender.getName() + "'s " + type.name().toLowerCase());
+        System.out.println(w.getName() + " hears " + sender.getName() + "'s " + type.name().toLowerCase(Locale.ROOT));
 
         switch (type) {
             case DOMINATION -> handleDomination(sender);
             case SUBMISSION -> handleSubmission(sender);
             case AGGRESSION -> handleAggression(sender);
             case BELONGING -> handleBelonging(sender);
-            case JOY, SADNESS -> System.out.println(w.getName() + " feels " + type.name().toLowerCase());
+            case JOY, SADNESS -> System.out.println(w.getName() + " feels " + type.name().toLowerCase(Locale.ROOT));
         }
     }
 
@@ -42,9 +43,12 @@ WerewolfHowlManager {
             w.setDominationFactor(w.getDominationFactor() + 1);
     }
 
+    @SuppressWarnings("unused")
     private void handleAggression(Werewolf sender) {
-        if (Math.random() < w.getImpetuosityFactor())
+        // sender parameter kept for consistency with other handle methods
+        if (Math.random() < w.getImpetuosityFactor()) {
             w.setBelligerence(w.getBelligerence() + AGGRESSION_INCREASE);
+        }
     }
 
     private void handleBelonging(Werewolf sender) {

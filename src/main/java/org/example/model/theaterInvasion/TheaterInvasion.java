@@ -1,11 +1,16 @@
 package org.example.model.theaterInvasion;
 
-import org.example.model.places.RomanFortifiedCamp;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+
 import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
 import org.example.model.character.roman.Legionary;
-import org.example.model.character.werewolf.Werewolf;
 import org.example.model.clanLeader.ClanLeader;
 import org.example.model.food.FoodItem;
 import org.example.model.food.FoodItemType;
@@ -13,13 +18,6 @@ import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
 import org.example.model.potion.Potion;
-import org.example.model.places.GallicVillage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.Iterator; // Import needed to clean lists properly
 
 /**
  * The {@code TheaterInvasion} class acts as the main engine (Controller) of the simulation.
@@ -31,16 +29,17 @@ import java.util.Iterator; // Import needed to clean lists properly
  */
 public class TheaterInvasion {
 
+    private static final Random RANDOM = new Random();
     private String theaterName;
-    private int maxPlaces;
     private ArrayList<AbstractPlace> existantsPlaces;
     private ArrayList<ClanLeader> clanLeaders;
 
+    @SuppressWarnings("unused")
     public TheaterInvasion(String theaterName, int maxPlaces, ArrayList<AbstractPlace> existantsPlaces, ArrayList<ClanLeader> clanLeaders) {
         this.theaterName = theaterName;
-        this.maxPlaces = maxPlaces;
-        this.existantsPlaces = existantsPlaces;
-        this.clanLeaders = clanLeaders;
+        // maxPlaces parameter kept for API compatibility but not stored
+        this.existantsPlaces = new ArrayList<>(existantsPlaces);
+        this.clanLeaders = new ArrayList<>(clanLeaders);
     }
 
     // --- Utility method to secure user input ---
@@ -67,7 +66,7 @@ public class TheaterInvasion {
     }
 
     public ArrayList<AbstractPlace> getExistantsPlaces() {
-        return existantsPlaces;
+        return new ArrayList<>(existantsPlaces);
     }
 
     public String getTheaterName() {
@@ -85,19 +84,18 @@ public class TheaterInvasion {
      */
     private void handleCombats() {
         System.out.println(">> Sounds of battle...");
-        Random rand = new Random();
 
-        for (AbstractPlace place : getExistantsPlaces()) {
+        for (AbstractPlace place : existantsPlaces) {
             boolean isBattlefield = place instanceof Battlefield;
             // Slight increase in combat chances to make the simulation more dynamic
             int chanceOfFight = isBattlefield ? 80 : 30;
 
-            if (rand.nextInt(100) < chanceOfFight) {
+            if (RANDOM.nextInt(100) < chanceOfFight) {
                 List<AbstractCharacter> chars = place.getPresentCharacters();
 
                 if (chars.size() >= 2) {
-                    AbstractCharacter c1 = chars.get(rand.nextInt(chars.size()));
-                    AbstractCharacter c2 = chars.get(rand.nextInt(chars.size()));
+                    AbstractCharacter c1 = chars.get(RANDOM.nextInt(chars.size()));
+                    AbstractCharacter c2 = chars.get(RANDOM.nextInt(chars.size()));
 
                     // Ensure they don't fight themselves and are alive
                     if (c1 != c2 && c1.isAlive() && c2.isAlive()) {
@@ -110,8 +108,8 @@ public class TheaterInvasion {
                         // Force damage here in case mutualFight didn't do it correctly.
                         // Assuming characters have getHealth/setHealth methods.
                         // Random damage between 5 and 15.
-                        int dmg1 = rand.nextInt(11) + 5;
-                        int dmg2 = rand.nextInt(11) + 5;
+                        int dmg1 = RANDOM.nextInt(11) + 5;
+                        int dmg2 = RANDOM.nextInt(11) + 5;
 
                         c1.setHealth(c1.getHealth() - dmg1);
                         c2.setHealth(c2.getHealth() - dmg2);
@@ -148,10 +146,9 @@ public class TheaterInvasion {
 
     private void updateCharactersState() {
         System.out.println(">> Time passes (Hunger increases, Potion fades)...");
-        Random rand = new Random();
         for (AbstractPlace place : existantsPlaces) {
             for (AbstractCharacter c : place.getPresentCharacters()) {
-                if (rand.nextBoolean()) {
+                if (RANDOM.nextBoolean()) {
                     c.setHunger(c.getHunger() + 5);
                 }
                 if (c.getLevelMagicPotion() > 0) {
@@ -187,17 +184,14 @@ public class TheaterInvasion {
 
     private void spawnFood() {
         System.out.println(">> Nature offers its gifts...");
-        Random rand = new Random();
         FoodItemType[] allowedTypes = FoodItemType.values();
 
-        for (AbstractPlace place : getExistantsPlaces()) {
-            if (!(place instanceof Battlefield)) {
-                if (rand.nextInt(100) < 30) {
-                    FoodItemType randomType = allowedTypes[rand.nextInt(allowedTypes.length)];
-                    FoodItem newItem = new FoodItem(randomType);
-                    place.addFood(newItem);
-                    System.out.println("🍎 A " + newItem.getName() + " appeared in " + place.getName());
-                }
+        for (AbstractPlace place : existantsPlaces) {
+            if (!(place instanceof Battlefield) && RANDOM.nextInt(100) < 30) {
+                FoodItemType randomType = allowedTypes[RANDOM.nextInt(allowedTypes.length)];
+                FoodItem newItem = new FoodItem(randomType);
+                place.addFood(newItem);
+                System.out.println("🍎 A " + newItem.getName() + " appeared in " + place.getName());
             }
         }
     }
@@ -399,7 +393,7 @@ public class TheaterInvasion {
     }
 
     public void run() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
         int turn = 0;
 
         while (true) {

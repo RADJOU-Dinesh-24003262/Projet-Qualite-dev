@@ -1,7 +1,7 @@
 package org.example;
 
-import org.example.model.places.RomanFortifiedCamp;
-import org.example.model.theaterInvasion.TheaterInvasion;
+import java.util.ArrayList;
+
 import org.example.model.character.AbstractCharacter;
 import org.example.model.character.gallic.Druid;
 import org.example.model.character.gallic.Gallic;
@@ -13,10 +13,9 @@ import org.example.model.food.FoodItemType;
 import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
-import org.example.model.potion.Potion;
 import org.example.model.places.GallicVillage;
-
-import java.util.ArrayList;
+import org.example.model.places.RomanFortifiedCamp;
+import org.example.model.theaterInvasion.TheaterInvasion;
 
 /**
  * Entry point for the Invasion Simulation.

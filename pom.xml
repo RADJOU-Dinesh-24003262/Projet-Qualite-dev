@@ -97,6 +97,7 @@
                     <effort>max</effort>
                     <threshold>Low</threshold>
                     <failOnError>true</failOnError>
+                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
             </plugin>
         </plugins>

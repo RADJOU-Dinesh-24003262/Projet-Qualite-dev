@@ -17,8 +17,8 @@ public class DominationManager {
         if (aggressor == null || target == null) return false;
         if (aggressor == target) return false;
 
-        if (!hierarchy.getMembers().contains(aggressor) ||
-            !hierarchy.getMembers().contains(target)) {
+        if (!hierarchy.containsMember(aggressor) ||
+            !hierarchy.containsMember(target)) {
             System.out.println("❌ Both werewolves must belong to the same pack.");
             return false;
         }
@@ -80,6 +80,6 @@ public class DominationManager {
     }
 
     private boolean isOmega(Werewolf w) {
-        return hierarchy.getHierarchy().get(Rank.OMEGA).contains(w);
+        return hierarchy.getWerewolvesByRank(Rank.OMEGA).contains(w);
     }
 }
