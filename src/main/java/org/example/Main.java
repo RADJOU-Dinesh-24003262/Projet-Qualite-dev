@@ -13,10 +13,12 @@ import org.example.model.food.FoodItemType;
 import org.example.model.places.AbstractPlace;
 import org.example.model.places.Battlefield;
 import org.example.model.places.Enclosure;
+import org.example.model.potion.Potion;
 import org.example.model.places.GallicVillage;
 import org.example.model.theaterInvasion.TheaterInvasion;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Main entry point for the "Theater Invasion" application.
@@ -40,9 +42,11 @@ public class Main {
      * @param args Command line arguments (not used).
      */
     public static void main(String[] args) {
+        // --- 1. Container Initialization ---
         ArrayList<AbstractPlace> places = new ArrayList<>();
         ArrayList<ClanLeader> leaders = new ArrayList<>();
 
+        // --- 2. Initial Food Creation ---
         ArrayList<FoodItem> villageFood = new ArrayList<>();
         villageFood.add(new FoodItem(FoodItemType.BOAR));
         villageFood.add(new FoodItem(FoodItemType.BOAR));
@@ -54,6 +58,9 @@ public class Main {
         campFood.add(new FoodItem(FoodItemType.MEAD));
         campFood.add(new FoodItem(FoodItemType.HONEY));
 
+        // --- 3. Character Creation ---
+
+        // Gauls
         Gallic asterix = new Gallic();
         asterix.setName("Asterix");
         asterix.setHealth(100);
@@ -67,7 +74,7 @@ public class Main {
         obelix.setStamina(100);
 
         Druid panoramix = new Druid();
-        panoramix.setName("Panoramix");
+        panoramix.setName("Getafix"); // English name for Panoramix
         panoramix.setHealth(80);
         panoramix.setStrength(10);
 
@@ -76,6 +83,7 @@ public class Main {
         gauls.add(obelix);
         gauls.add(panoramix);
 
+        // Romans
         Legionary brutus = new Legionary();
         brutus.setName("Brutus");
         brutus.setHealth(100);
@@ -105,14 +113,15 @@ public class Main {
 
         // Gallic Village
         GallicVillage village = new GallicVillage(
-                "Abraracourcix",
-                "Village des Irréductibles",
+                "Vitalstatistix",
+                "Village of the Indomitable",
                 500,
                 gauls,
                 villageFood
         );
         places.add(village);
 
+        // Roman Fortified Camp
         RomanFortifiedCamp camp = new RomanFortifiedCamp(
                 "Caius Bonus",
                 "Babaorum",
@@ -124,8 +133,8 @@ public class Main {
 
         // Enclosure (for werewolves)
         Enclosure enclosure = new Enclosure(
-                "Le Gardien",
-                "Enclos des Loups",
+                "The Keeper",
+                "Wolf Enclosure",
                 200,
                 werewolves,
                 new ArrayList<>()
