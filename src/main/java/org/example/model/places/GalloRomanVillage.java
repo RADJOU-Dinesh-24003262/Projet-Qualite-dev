@@ -1,10 +1,10 @@
 package org.example.model.places;
 
-import org.example.model.Character.roman.Roman;
-import org.example.model.Character.gallic.Gallic;
+import org.example.model.character.roman.Roman;
+import org.example.model.character.gallic.Gallic;
 import java.util.ArrayList;
 
-import org.example.model.Character.AbstractCharacter;
+import org.example.model.character.AbstractCharacter;
 import org.example.model.food.FoodItem;
 
 /**

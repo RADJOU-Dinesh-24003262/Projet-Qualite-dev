@@ -1,7 +1,7 @@
 package org.example.model.pack;
 
-import org.example.model.Character.werewolf.HowlType;
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.werewolf.HowlType;
+import org.example.model.character.werewolf.Werewolf;
 
 import java.util.ArrayList;
 import java.util.List;

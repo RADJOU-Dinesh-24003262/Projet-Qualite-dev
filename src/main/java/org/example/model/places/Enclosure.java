@@ -2,9 +2,9 @@ package org.example.model.places;
 
 import java.util.ArrayList;
 
-import org.example.model.Character.AbstractCharacter;
+import org.example.model.character.AbstractCharacter;
 import org.example.model.food.FoodItem;
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.werewolf.Werewolf;
 
 /**
  * Represents an enclosure that can only contain fantasy creatures.

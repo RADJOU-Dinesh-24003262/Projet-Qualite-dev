@@ -1,8 +1,8 @@
 package org.example.model.pack;
 
-import org.example.model.Character.AbstractCharacter;
-import org.example.model.Character.werewolf.Werewolf;
-import org.example.model.Character.werewolf.AgeCategory;
+import org.example.model.character.AbstractCharacter;
+import org.example.model.character.werewolf.Werewolf;
+import org.example.model.character.werewolf.AgeCategory;
 
 public class PackValidator {
 

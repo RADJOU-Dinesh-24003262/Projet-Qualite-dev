@@ -1,10 +1,10 @@
 package org.example.model.clanLeader;
 
-import org.example.model.Character.gallic.Druid;
-import org.example.model.Character.gallic.Gallic;
-import org.example.model.Character.roman.Legionary;
-import org.example.model.Character.roman.Roman;
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.gallic.Druid;
+import org.example.model.character.gallic.Gallic;
+import org.example.model.character.roman.Legionary;
+import org.example.model.character.roman.Roman;
+import org.example.model.character.werewolf.Werewolf;
 import org.example.model.food.FoodItem;
 import org.example.model.food.FoodItemType;
 import org.example.model.places.Battlefield;

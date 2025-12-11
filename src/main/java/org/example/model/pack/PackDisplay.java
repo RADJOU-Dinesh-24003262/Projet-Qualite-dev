@@ -1,6 +1,6 @@
 package org.example.model.pack;
 
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.werewolf.Werewolf;
 
 import java.util.List;
 

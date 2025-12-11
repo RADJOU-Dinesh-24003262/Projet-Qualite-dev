@@ -1,7 +1,7 @@
 package org.example.model.pack;
 
 import java.util.*;
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.werewolf.Werewolf;
 
 public class HierarchyManager {
 

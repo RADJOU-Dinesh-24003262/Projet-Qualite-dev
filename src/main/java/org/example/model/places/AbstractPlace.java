@@ -2,7 +2,7 @@ package org.example.model.places;
 
 import java.util.ArrayList;
 
-import org.example.model.Character.AbstractCharacter;
+import org.example.model.character.AbstractCharacter;
 import org.example.model.food.FoodItem;
 
 /**

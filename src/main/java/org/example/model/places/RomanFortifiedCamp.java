@@ -1,11 +1,11 @@
 package org.example.model.places;
 
-import org.example.model.Character.roman.Legionary;
-import org.example.model.Character.roman.General;
+import org.example.model.character.roman.Legionary;
+import org.example.model.character.roman.General;
 import java.util.ArrayList;
 
-import org.example.model.Character.AbstractCharacter;
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.AbstractCharacter;
+import org.example.model.character.werewolf.Werewolf;
 import org.example.model.food.FoodItem;
 
 /**

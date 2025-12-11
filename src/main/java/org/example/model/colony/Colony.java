@@ -1,9 +1,9 @@
 package org.example.model.colony;
 
-import org.example.model.Character.AbstractCharacter;
-import org.example.model.Character.werewolf.AgeCategory;
-import org.example.model.Character.werewolf.HowlType;
-import org.example.model.Character.werewolf.Werewolf;
+import org.example.model.character.AbstractCharacter;
+import org.example.model.character.werewolf.AgeCategory;
+import org.example.model.character.werewolf.HowlType;
+import org.example.model.character.werewolf.Werewolf;
 import org.example.model.pack.Pack;
 import org.example.model.pack.Rank;
 
